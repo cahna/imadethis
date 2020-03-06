@@ -1,0 +1,61 @@
+FORMAT: 1A
+HOST: http://localhost:5000
+
+# knock_api
+
+Knock Interview API 
+
+# Group Thread
+
+Manage message threads.
+
+## [/thread]
+
+### Create a thread on behalf of a user [POST]
++ Request (application/json)
+
+        {
+            "users": [
+                "kiefer",
+                "jeff_goldblum"
+            ]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "thread_id": 123
+        }
+
+## [/thread/{thread_id}/{username}]
+
++ Parameters
+    + thread_id (number, required) - ID of existing thread for message
+    + username (string, required) - Existing username identifying poster of message
+
+### Create a message on behalf of a user on a thread [POST]
++ Request (application/json)
+
+        {
+            "message": "This is a message!"
+        }
+
++ Response 204 (application/json)
+
+        {}
+        
+## [/thread/{thread_id}]
+
++ Parameters
+    + thread_id (number, required) - ID of existing thread
+
+### Retrieve thread messages [GET]
++ Response 200 (application/json)
+
+        {
+            "messages": [
+                { "username": "kiefer", "message": "Hello world!" },
+                { "username": "jeff_goldblum", "message": "This is a message!" }
+            }
+        }
+
