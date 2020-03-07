@@ -19,6 +19,8 @@ def valid_create_thread_request(data) -> bool:
         return False
     if not all(isinstance(u, str) for u in data['users']):
         return False
+    if any(len(u) >= 64 or len(u) < 1 for u in data['users']):
+        return False
     return len(set(data['users'])) == len(data['users']) # No duplicates
 
 @bp.route('/', methods=['POST'])
@@ -38,11 +40,9 @@ def create_thread() -> Response:
     if len(existing_users) != len(data['users']): # Add new users to DB
         new_users = [User(username=u) for u in data['users'] if u not in existing_usernames]
 
-        if any(len(u.username) >= 64 or len(u.username) < 1 for u in new_users):
-            abort(400) # Invalid username
-
         for u in new_users:
             db.session.add(u)
+
         db.session.commit()
 
     for u in existing_users + new_users: # Add users to thread
