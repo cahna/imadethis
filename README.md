@@ -15,13 +15,16 @@ cd knock_api
 python3 -m venv venv
 source venv/bin/activate
 
-# Install to venv (also allows 'knock_api' to be imported)
+# Install dependencies
+pip install -r requirements.txt
+
+# Setup local imports for development
 pip install -e .
+pip install '.[test]'
 
 # Configure environment
-pip install '.[test]'
 export FLASK_APP=knock_api
-export FLASK_ENV=development
+export FLASK_ENV=
 ```
 
 ### Test
@@ -48,7 +51,7 @@ flask run
 ### Create a thread
 
 ```
-curl -d '{"users":["kiefer","jeff_goldblum"]}' -H 'Content-Type: application/json' http://127.0.0.1:5000/thread
+curl -d '{"users":["kiefer","jeff_goldblum"]}' -H 'Content-Type: application/json' -L http://127.0.0.1:5000/thread
 ```
 
 Example response:
@@ -60,13 +63,13 @@ Example response:
 ### Post a message to a thread
 
 ```
-curl -d '{"message":"Hello, world!"}' -H 'Content-Type: application/json' http://127.0.0.1:5000/thread/123/kiefer
+curl -d '{"message":"Hello, world!"}' -H 'Content-Type: application/json' -L http://127.0.0.1:5000/thread/123/kiefer
 ```
 
 ### Get thread messages
 
 ```
-curl http://127.0.0.1:5000/thread/123
+curl -L http://127.0.0.1:5000/thread/123
 ```
 
 Example response:
@@ -87,8 +90,6 @@ For non-SQLite databases. Must be run manually on-demand until automation config
 
 ### docker-compose.yml
 **TODO**
-The `Dockerfile` and `docker-compose.yml` files are provided to jumpstart production deployment(s).
-Try it locally with `docker-compose up`.
 
 ## React UI
 **TODO**
