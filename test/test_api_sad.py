@@ -11,7 +11,7 @@ from .shared import (
 
 def test_create_thread_no_users(client: FlaskClient):
     """Request is invalid because 'users' is empty"""
-    response = client.post('/thread/',
+    response = client.post('/thread',
                            json={'users': []},
                            follow_redirects=True)
 
@@ -21,7 +21,7 @@ def test_create_thread_no_users(client: FlaskClient):
 
 def test_create_thread_malformed_request(client: FlaskClient):
     """Request missing required schema values"""
-    response = client.post('/thread/',
+    response = client.post('/thread',
                            json={'foo': True},
                            follow_redirects=True)
 
@@ -40,7 +40,7 @@ def test_create_thread_duplicate_username(client: FlaskClient):
             repeat_username,
         ],
     }
-    response = client.post('/thread/', json=payload, follow_redirects=True)
+    response = client.post('/thread', json=payload, follow_redirects=True)
 
     assert response.status_code == 400
     assert response.content_type == 'application/json'
@@ -51,7 +51,7 @@ def test_create_thread_username_too_long(client: FlaskClient):
     payload = {
         'users': [valid_username(), random_string(75), random_string(100)],
     }
-    response = client.post('/thread/', json=payload, follow_redirects=True)
+    response = client.post('/thread', json=payload, follow_redirects=True)
 
     assert response.status_code == 400
     assert response.content_type == 'application/json'
@@ -62,7 +62,7 @@ def test_create_thread_username_too_short(client: FlaskClient):
     payload = {
         'users': [valid_username(), valid_username(), ''],
     }
-    response = client.post('/thread/', json=payload, follow_redirects=True)
+    response = client.post('/thread', json=payload, follow_redirects=True)
 
     assert response.status_code == 400
     assert response.content_type == 'application/json'
@@ -73,7 +73,7 @@ def test_create_thread_username_bad_type(client: FlaskClient):
     payload = {
         'users': [valid_username(), valid_username(), 123],
     }
-    response = client.post('/thread/', json=payload, follow_redirects=True)
+    response = client.post('/thread', json=payload, follow_redirects=True)
 
     assert response.status_code == 400
     assert response.content_type == 'application/json'

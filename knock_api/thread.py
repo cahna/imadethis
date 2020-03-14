@@ -27,7 +27,7 @@ def valid_create_thread_request(data) -> bool:
     return len(set(data['users'])) == len(data['users'])  # No duplicates
 
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def create_thread() -> Response:
     data = request.get_json()
 

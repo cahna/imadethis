@@ -39,9 +39,10 @@ def create_thread(client: FlaskClient, users: List[str]) -> int:
 def verify_thread_contents(client: FlaskClient,
                            thread_id: int,
                            expect_length: int = 0) -> List[dict]:
-    response = client.get(f'/thread/{thread_id}')
+    response = client.get(f'/thread/{thread_id}', follow_redirects=True)
 
-    assert response.status_code == 200
+    assert response.status_code == 200, \
+        f'Received code: {response.status_code}'
     assert response.content_type == 'application/json'
     data = response.get_json()
     assert 'messages' in data

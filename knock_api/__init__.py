@@ -1,6 +1,3 @@
-__version__ = '0.1'
-__author__ = 'Conor Heine'
-
 # import os
 from flask import Flask
 from flask_migrate import Migrate

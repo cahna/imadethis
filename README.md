@@ -18,19 +18,20 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Setup local imports for development
+# Setup editable local imports for development
 pip install -e .
-pip install '.[test]'
 
 # Configure environment
 export FLASK_APP=knock_api
-export FLASK_ENV=
+export FLASK_ENV=development
 ```
 
 ### Test
 
 ```
 pytest -v
+# OR:
+python setup.py test
 ```
 
 Code coverage:
@@ -38,6 +39,12 @@ Code coverage:
 ```
 coverage run -m pytest
 coverage report
+```
+
+Lint:
+
+```
+flake8
 ```
 
 ### Run development server
