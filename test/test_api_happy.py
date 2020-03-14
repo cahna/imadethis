@@ -1,7 +1,12 @@
 from __future__ import annotations
 from flask.testing import FlaskClient
-from .fixtures import *
-from .shared import create_thread, verify_thread_contents, verify_add_message, valid_username, random_string, valid_username
+from .shared import (
+    create_thread,
+    verify_thread_contents,
+    verify_add_message,
+    random_string,
+    valid_username
+)
 
 
 def test_create_thread_1_user(client: FlaskClient):
@@ -9,15 +14,19 @@ def test_create_thread_1_user(client: FlaskClient):
     thread_id = create_thread(client, ['abcdefghijklmnopqrstuvwxyz'])
     verify_thread_contents(client, thread_id)
 
+
 def test_create_thread_2_users(client: FlaskClient):
     """Basic create thread: 2 users"""
     thread_id = create_thread(client, ['foo', '123'])
     verify_thread_contents(client, thread_id)
 
+
 def test_create_thread_n_users(client: FlaskClient):
     """Basic create thread: >2 users"""
-    thread_id = create_thread(client, ['foo', 'bar', 'baz', 'gif', valid_username()])
+    valid_usernames = ['foo', 'bar', 'baz', 'gif', valid_username()]
+    thread_id = create_thread(client, valid_usernames)
     verify_thread_contents(client, thread_id)
+
 
 def test_create_threads_same_users(client: FlaskClient):
     """Create 2 different threads with the same members"""
@@ -29,6 +38,7 @@ def test_create_threads_same_users(client: FlaskClient):
     verify_thread_contents(client, t1_id)
     verify_thread_contents(client, t2_id)
 
+
 def test_create_threads_different_users(client: FlaskClient):
     """Create 2 threads with different users"""
     t1_id = create_thread(client, ['person1', 'person2'])
@@ -38,6 +48,7 @@ def test_create_threads_different_users(client: FlaskClient):
 
     verify_thread_contents(client, t1_id)
     verify_thread_contents(client, t2_id)
+
 
 def test_create_threads_with_new_and_existing_users(client: FlaskClient):
     """Create threads with combinations of new and existing users"""
@@ -49,10 +60,12 @@ def test_create_threads_with_new_and_existing_users(client: FlaskClient):
         create_thread(client, ['J']),
     ]
 
-    assert len(set(threads)) == len(threads), 'should return all unique thread ids'
+    assert len(set(threads)) == len(threads), \
+        'should return all unique thread ids'
 
     for t_id in threads:
         verify_thread_contents(client, t_id)
+
 
 def test_add_message_valid_user(client: FlaskClient):
     thread_id = create_thread(client, ['happy', 'hooray'])
@@ -62,9 +75,12 @@ def test_add_message_valid_user(client: FlaskClient):
     assert messages[0]['username'] == 'happy'
     assert messages[0]['message'] == 'Hello, world!'
 
+
 def test_add_messages_from_all_valid_users(client: FlaskClient):
     user1, user2, user3 = 'A', '2', valid_username()
-    user1_msg, user2_msg, user3_msg = random_string(23), random_string(124), random_string(55)
+    user1_msg = random_string(23)
+    user2_msg = random_string(124)
+    user3_msg = random_string(55)
     thread_id = create_thread(client, [user1, user2, user3])
 
     # Add message from user2

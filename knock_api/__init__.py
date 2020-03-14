@@ -1,9 +1,11 @@
-import os
-import collections
-from datetime import datetime
-from flask import Flask, Blueprint, request, abort
+__version__ = '0.1'
+__author__ = 'Conor Heine'
+
+# import os
+from flask import Flask
 from flask_migrate import Migrate
-from .models import db, User, Thread, ThreadMembership, ThreadMessage
+from .models import db
+
 
 def create_app(config_overrides=None):
     app = Flask(__name__)

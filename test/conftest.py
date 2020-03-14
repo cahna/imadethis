@@ -6,6 +6,7 @@ from flask.testing import FlaskClient
 from knock_api import create_app
 from knock_api.models import db
 
+
 @pytest.fixture
 def client() -> FlaskClient:
     fd, db_file = tempfile.mkstemp()
