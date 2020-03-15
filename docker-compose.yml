@@ -1,17 +1,51 @@
 ---
 version: '3.1'
 services:
-  knock_db:
-    image: postgres
+  db:
+    image: postgres:12
     restart: always
     environment:
-      POSTGRES_PASSWORD: knock_api
-
-  knock_api:
+      - POSTGRES_USER=knock
+      - POSTGRES_PASSWORD=knock
+    networks:
+      - knock_private
+  migration:
+    build: .
+    environment:
+      - FLASK_APP=knock_api
+      - FLASK_ENV=production
+      - KNOCK_DB_URI=postgresql://knock:knock@db:5432/knock
+    command: flask db upgrade
+    depends_on:
+      - db
+    networks:
+      - knock_private
+  api:
     build: .
     restart: always
+    environment:
+      - FLASK_ENV=production
+      - KNOCK_DB_URI=postgresql://knock:knock@db:5432/knock
     ports:
-    link:
-
-#  knock_web:
+    depends_on:
+      - db
+      - migration
+    networks:
+      - knock_private
+    ports:
+      - 5000:5000
+#  web:
+#    image: nginx
+#    ports:
+#      - 80:8080
+#      - 443:8443
+#    depends_on:
+#      - api
+#    networks:
+#      - knock_public
+networks:
+  knock_public:
+    driver: bridge
+  knock_private:
+    driver: bridge
 
