@@ -1,5 +1,7 @@
 # `knock_api` for Knock Full-Stack Interview
 
+![Python application](https://github.com/cahna/knock_api/workflows/Python%20application/badge.svg)
+
 See `knock_api.apib` for API documentation.
 
 ## Development
