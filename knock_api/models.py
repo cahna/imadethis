@@ -12,6 +12,7 @@ class ThreadMembership(db.Model):
     username = db.Column(db.String(64),
                          db.ForeignKey('user.username'),
                          primary_key=True)
+    date_created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     thread = db.relationship('Thread',
                              backref=db.backref('members', lazy=True))
@@ -20,11 +21,15 @@ class ThreadMembership(db.Model):
 
 
 class User(db.Model):
+    """Backrefs provide properties: 'messages' and 'belongs_to'"""
     username = db.Column(db.String(64), primary_key=True)
+    date_created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
 
 class Thread(db.Model):
+    """Backrefs provide properties: 'members' and 'messages'"""
     id = db.Column(db.Integer, primary_key=True)
+    date_created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
 
 class ThreadMessage(db.Model):

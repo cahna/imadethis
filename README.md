@@ -55,6 +55,19 @@ flake8
 flask run
 ```
 
+### PostgreSQL for Development
+
+By default, SQLite is used for development (SQLite is always used for tests).
+To use a PostgreSQL container for development:
+
+```
+# Start a postgres container:
+docker run --name postgres-dev -p 5432:5432 -e POSTGRES_USER=knock -e POSTGRES_PASSWORD=knock postgres:12
+
+# Set environment variable to configure connection:
+export KNOCK_DB_URI=postgresql://knock:knock@localhost:5432/knock
+```
+
 ## Manual API Testing
 
 ### Healthcheck
