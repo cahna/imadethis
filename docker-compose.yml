@@ -1,5 +1,10 @@
 ---
 version: '3.1'
+networks:
+  knock_public:
+    driver: bridge
+  knock_private:
+    driver: bridge
 services:
   db:
     image: postgres:12
@@ -9,6 +14,13 @@ services:
       - POSTGRES_PASSWORD=knock
     networks:
       - knock_private
+    ports:
+      - 5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U knock']
+      interval: 10s
+      timeout: 5s
+      retries: 5
   migration:
     build: .
     environment:
@@ -20,13 +32,17 @@ services:
       - db
     networks:
       - knock_private
+    healthcheck:
+      test: ['CMD-SHELL', '[ $$(flask db history | wc -l) -eq $$(ls -l migrations/versions/*.py | wc -l) ]']
+      interval: 10s
+      timeout: 5s
+      retries: 5
   api:
     build: .
     restart: always
     environment:
       - FLASK_ENV=production
       - KNOCK_DB_URI=postgresql://knock:knock@db:5432/knock
-    ports:
     depends_on:
       - db
       - migration
@@ -34,18 +50,19 @@ services:
       - knock_private
     ports:
       - 5000:5000
-#  web:
-#    image: nginx
-#    ports:
-#      - 80:8080
-#      - 443:8443
-#    depends_on:
-#      - api
-#    networks:
-#      - knock_public
-networks:
-  knock_public:
-    driver: bridge
-  knock_private:
-    driver: bridge
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -L -f http://localhost:5000/health']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    image: nginx
+    restart: always
+    ports:
+      - 80:8080
+      - 443:8443
+    depends_on:
+      - api
+    networks:
+      - knock_public
 

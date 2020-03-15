@@ -1,6 +1,7 @@
 import os
 import logging
-from flask import Flask
+from werkzeug.exceptions import HTTPException
+from flask import Flask, jsonify
 from flask_migrate import Migrate
 from .models import db
 
@@ -30,9 +31,14 @@ def create_app(config_overrides=None):
     if app.env == 'production' and not os.environ.get('KNOCK_DB_URI'):
         logger.error('Missing KNOCK_DB_URI for production environment!')
 
+    @app.errorhandler(HTTPException)
+    def bad_request(error):
+        return jsonify({'error': error.description}), error.code
+
     logger.info(f'Configured for environment: {app.env}')
 
-    from . import thread
+    from . import thread, health
+    app.register_blueprint(health.bp)
     app.register_blueprint(thread.bp)
 
     migrate = Migrate(app, db)

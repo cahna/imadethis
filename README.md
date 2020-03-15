@@ -55,6 +55,12 @@ flask run
 
 ## Manual API Testing
 
+### Healthcheck
+
+```
+curl -L -f http://127.0.0.1:5000/health
+```
+
 ### Create a thread
 
 ```
@@ -95,8 +101,15 @@ For non-SQLite databases. Must be run manually on-demand until automation config
 2. `flask db migrate` : Create first migration (commit changes to VCS)
 3. `flask db upgrade` : Apply migration
 
-### docker-compose.yml
-**TODO**
+### Docker
+
+To start a development stack:
+
+```
+docker-compose up -d
+```
+
+Once running, the steps from `Manual API Testing` may be used to verify the environment.
 
 ## React UI
 **TODO**

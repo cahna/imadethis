@@ -1,15 +1,15 @@
 from typing import Mapping
 from flask import Blueprint, request, abort, jsonify, Response
-from werkzeug.exceptions import HTTPException
+# from werkzeug.exceptions import HTTPException
 from .models import db, User, Thread, ThreadMembership, ThreadMessage
 
 
 bp = Blueprint('thread', __name__, url_prefix='/thread')
 
 
-@bp.errorhandler(HTTPException)
-def bad_request(error):
-    return jsonify({'error': error.description}), error.code
+# @bp.errorhandler(HTTPException)
+# def bad_request(error):
+#    return jsonify({'error': error.description}), error.code
 
 
 def valid_create_thread_request(data) -> bool:
