@@ -5,11 +5,23 @@
  */
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.HomePage';
+export const scope = 'boilerplate.containers.HomePage';
 
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the HomePage container!',
+    defaultMessage: 'Welcome to Enterprise-Standard Chat!',
+  },
+  loginHeader: {
+    id: `${scope}.login.message`,
+    defaultMessage: 'Login to begin',
+  },
+  loginUsernameLabel: {
+    id: `${scope}.loginUsernameLabel.message`,
+    defaultMessage: 'Enter your username',
+  },
+  submitLoginForm: {
+    id: `${scope}.submitLoginForm.message`,
+    defaultMessage: 'Login',
   },
 });
