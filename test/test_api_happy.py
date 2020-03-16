@@ -1,23 +1,27 @@
 from __future__ import annotations
 from flask.testing import FlaskClient
 from .shared import (
+    random_string,
+    valid_username,
     create_thread,
     verify_thread_contents,
     verify_add_message,
-    random_string,
-    valid_username
+    verify_user,
 )
 
 
 def test_create_thread_1_user(client: FlaskClient):
     """Basic create thread: 1 user"""
-    thread_id = create_thread(client, ['abcdefghijklmnopqrstuvwxyz'])
+    username = 'abcdefghijklmnopqrstuvwxyz'
+    thread_id = create_thread(client, [username])
     verify_thread_contents(client, thread_id)
+    verify_user(client, username, [thread_id])
 
 
 def test_create_thread_2_users(client: FlaskClient):
     """Basic create thread: 2 users"""
-    thread_id = create_thread(client, ['foo', '123'])
+    user1, user2 = 'foo', '123'
+    thread_id = create_thread(client, [user1, user2])
     verify_thread_contents(client, thread_id)
 
 
@@ -26,6 +30,8 @@ def test_create_thread_n_users(client: FlaskClient):
     valid_usernames = ['foo', 'bar', 'baz', 'gif', valid_username()]
     thread_id = create_thread(client, valid_usernames)
     verify_thread_contents(client, thread_id)
+    for u in valid_usernames:
+        verify_user(client, u, [thread_id])
 
 
 def test_create_threads_same_users(client: FlaskClient):
@@ -35,14 +41,15 @@ def test_create_threads_same_users(client: FlaskClient):
 
     assert t1_id != t2_id
 
-    verify_thread_contents(client, t1_id)
-    verify_thread_contents(client, t2_id)
+    for tid in [t1_id, t2_id]:
+        verify_thread_contents(client, tid)
 
 
 def test_create_threads_different_users(client: FlaskClient):
     """Create 2 threads with different users"""
-    t1_id = create_thread(client, ['person1', 'person2'])
-    t2_id = create_thread(client, ['person3', 'bot1337'])
+    u1, u2, u3, u4 = 'person1', 'person2', 'person3', 'bot1337'
+    t1_id = create_thread(client, [u1, u2])
+    t2_id = create_thread(client, [u3, u4])
 
     assert t1_id != t2_id
 
