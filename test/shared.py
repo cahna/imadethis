@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Mapping
 import random
 import string
 from flask.testing import FlaskClient
@@ -71,3 +71,19 @@ def verify_add_message(client: FlaskClient,
 
     return response
 
+
+def verify_user(client: FlaskClient,
+                username: str,
+                thread_ids: List[int]) -> Mapping:
+    response = client.get(f'/users/{username}', follow_redirects=True)
+
+    assert response.status_code == 200, \
+        f'Received code: {response.status_code}'
+    assert response.content_type == 'application/json'
+    data = response.get_json()
+    assert 'username' in data
+    assert 'threads' in data
+    assert len(data['threads']) == len(thread_ids)
+    assert all(tid in data['threads'] for tid in thread_ids)
+
+    return data

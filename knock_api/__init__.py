@@ -6,19 +6,16 @@ from flask_migrate import Migrate
 from .models import db
 
 
+DEFAULT_DB_URI = 'sqlite:////tmp/knock.db'
+
 logging.basicConfig(level=logging.DEBUG,
                     datefmt='%Y-%m-%d %H:%M:%S',
                     handlers=[logging.StreamHandler()])
-
 logger = logging.getLogger()
 
 
-def create_app(config_overrides=None):
-    logger.info(f'Starting Flask app: {__name__}')
-
-    default_db_uri = 'sqlite:////tmp/knock.db'
-    db_uri = os.environ.get('KNOCK_DB_URI') or default_db_uri
-    app = Flask(__name__)
+def configure_app(app, config_overrides=None):
+    db_uri = os.environ.get('KNOCK_DB_URI') or DEFAULT_DB_URI
     app.config.from_mapping(
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_DATABASE_URI=db_uri,
@@ -30,16 +27,23 @@ def create_app(config_overrides=None):
 
     if app.env == 'production' and not os.environ.get('KNOCK_DB_URI'):
         logger.error('Missing KNOCK_DB_URI for production environment!')
+    
+    logger.info(f'Configured for environment: {app.env}')
+
+
+def create_app(config_overrides=None):
+    logger.info(f'Starting Flask app: {__name__}')
+
+    app = Flask(__name__)
+    configure_app(app, config_overrides)
 
     @app.errorhandler(HTTPException)
     def bad_request(error):
         return jsonify({'error': error.description}), error.code
 
-    logger.info(f'Configured for environment: {app.env}')
-
-    from . import thread, health
-    app.register_blueprint(health.bp)
-    app.register_blueprint(thread.bp)
+    from . import health, thread, users
+    for resource in [health, thread, users]:
+      app.register_blueprint(resource.bp)
 
     migrate = Migrate(app, db)
 
