@@ -95,7 +95,7 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectUserThreads(),
+  userThreads: makeSelectUserThreads(),
   username: makeSelectUsername(),
   loading: makeSelectLoading(),
   error: makeSelectError(),

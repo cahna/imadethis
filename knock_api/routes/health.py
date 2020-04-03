@@ -1,12 +1,21 @@
 from flask import Blueprint, jsonify, Response
-from .models import db
+from knock_api.models import db
 
 
 bp = Blueprint('health', __name__, url_prefix='/health')
 
 
+def health_resource(healthy: bool = True, details: str = '') -> Response:
+    return jsonify({'healthy': healthy, 'details': details})
+
+
 @bp.route('', methods=['GET'])
 def healthcheck() -> Response:
+    return health_resource()
+
+
+@bp.route('/db', methods=['GET'])
+def db_healthcheck() -> Response:
     status_code = 200
     healthy = True
     details = ''
@@ -17,5 +26,4 @@ def healthcheck() -> Response:
         details = str(e)
         status_code = 500
 
-    return jsonify({'healthy': healthy, 'details': details}), status_code
-
+    return health_resource(healthy, details), status_code

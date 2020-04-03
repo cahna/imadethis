@@ -7,6 +7,7 @@ from werkzeug.wrappers import Response
 
 
 VALID_CHARACTERS = string.ascii_letters + string.digits
+UUID_LENGTH = 36
 
 
 def random_string(length: int) -> str:
@@ -17,6 +18,53 @@ def random_string(length: int) -> str:
 
 def valid_username() -> str:
     return random_string(random.randint(1, 63))
+
+
+def verify_error_response(response: Response, code: int, message: str = None):
+    assert response.status_code == code
+    assert response.content_type == 'application/json'
+
+    if message:
+        data = response.get_json()
+        assert 'error' in data
+        err_msg = data['error']
+        assert err_msg == message, \
+            f'Expected error: "{message}". Instead got: "{err_msg}"'
+
+
+def verify_user_response(response: Response, username: str) -> Mapping:
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+
+    user_data = response.get_json()
+
+    assert 'username' in user_data
+    assert user_data['username'] == username
+    assert 'unique_id' in user_data
+    id_len = len(user_data['unique_id'])
+    assert id_len == UUID_LENGTH, \
+        f'Expected id_len == {UUID_LENGTH}. Instead got: {id_len}'
+    assert 'password' not in user_data
+    assert 'hashed_pw' not in user_data
+
+    return user_data
+
+
+def verify_create_user(client: FlaskClient,
+                       username: str,
+                       password: str) -> Mapping:
+    payload = dict(username=username, password=password)
+    response = client.post('/users/create',
+                           json=payload,
+                           follow_redirects=True)
+
+    return verify_user_response(response, username)
+
+
+def verify_get_user(client: FlaskClient, username: str) -> Mapping:
+    response = client.get(f'/users/{username}', follow_redirects=True)
+
+    return verify_user_response(response, username)
 
 
 def create_thread(client: FlaskClient, users: List[str]) -> int:

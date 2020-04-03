@@ -3,7 +3,6 @@ import logging
 from werkzeug.exceptions import HTTPException
 from flask import Flask, jsonify
 from flask_migrate import Migrate
-from .models import db
 
 
 DEFAULT_DB_URI = 'sqlite:////tmp/knock.db'
@@ -15,6 +14,9 @@ logger = logging.getLogger()
 
 
 def configure_app(app, config_overrides=None):
+    from .models import db
+    from .security import flask_bcrypt
+
     db_uri = os.environ.get('KNOCK_DB_URI') or DEFAULT_DB_URI
     app.config.from_mapping(
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -27,7 +29,12 @@ def configure_app(app, config_overrides=None):
 
     if app.env == 'production' and not os.environ.get('KNOCK_DB_URI'):
         logger.error('Missing KNOCK_DB_URI for production environment!')
-    
+
+    migrate = Migrate(app, db)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    flask_bcrypt.init_app(app)
+
     logger.info(f'Configured for environment: {app.env}')
 
 
@@ -41,14 +48,9 @@ def create_app(config_overrides=None):
     def bad_request(error):
         return jsonify({'error': error.description}), error.code
 
-    from . import health, thread, users
-    for resource in [health, thread, users]:
-      app.register_blueprint(resource.bp)
-
-    migrate = Migrate(app, db)
-
-    db.init_app(app)
-    migrate.init_app(app, db)
+    from .routes import blueprints
+    for bp in blueprints:
+        app.register_blueprint(bp)
 
     return app
 
