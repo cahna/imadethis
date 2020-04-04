@@ -1,7 +1,7 @@
 from typing import List
 from knock_api.security import flask_bcrypt
 from knock_api.models import db, User
-from knock_api.exceptions.users import UsernameAlreadyExists, NoSuchUsername
+from knock_api.exceptions.users import UsernameAlreadyExists, NoSuchUser
 
 
 def username_exists(username: str) -> bool:
@@ -13,7 +13,16 @@ def get_user_by_username(username: str) -> User:
     user = User.query.filter_by(username=username).first()
 
     if not user:
-        raise NoSuchUsername()
+        raise NoSuchUser()
+
+    return user
+
+
+def get_user_by_id(unique_id: str) -> User:
+    user = User.query.filter_by(unique_id=unique_id).first()
+
+    if not user:
+        raise NoSuchUser()
 
     return user
 

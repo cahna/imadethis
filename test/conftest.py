@@ -2,13 +2,14 @@ from __future__ import annotations
 import os
 import pytest
 import tempfile
+from flask import Flask
 from flask.testing import FlaskClient
 from knock_api import create_app
 from knock_api.models import db
 
 
 @pytest.fixture
-def client() -> FlaskClient:
+def test_app() -> Flask:
     fd, db_file = tempfile.mkstemp()
     config = {
         'SQLALCHEMY_DATABASE_URI': f'sqlite:///{db_file}',
@@ -16,11 +17,18 @@ def client() -> FlaskClient:
     }
     test_app = create_app(config)
 
+    yield test_app
+
+    os.close(fd)
+    os.unlink(db_file)
+
+
+@pytest.fixture
+def client(test_app: Flask) -> FlaskClient:
     with test_app.app_context():
         db.create_all()
 
     yield test_app.test_client()
 
-    os.close(fd)
-    os.unlink(db_file)
-
+    with test_app.app_context():
+        db.drop_all()

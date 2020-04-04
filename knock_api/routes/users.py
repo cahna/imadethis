@@ -1,27 +1,17 @@
-from flask import Blueprint, jsonify, Response, request
-from knock_api.models import User
-from knock_api.controllers.users import create_user, get_user_by_username
-from knock_api.controllers.validation.users import validate_create_user
+from flask import Blueprint, jsonify, Response
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from knock_api.services.users import get_user_by_id
+# from knock_api.exceptions.auth import ActionForbidden
 
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
 
-def user_resource(user: User) -> Response:
-    return jsonify(user.as_dict())
+@bp.route('/active_user', methods=['GET'])
+@jwt_required
+def get_active_user() -> Response:
+    identity = get_jwt_identity()
+    user = get_user_by_id(identity['unique_id'])
 
-
-@bp.route('/create', methods=['POST'])
-def route_create_user() -> Response:
-    username, password = validate_create_user(request.get_json())
-    user = create_user(username, password)
-
-    return user_resource(user)
-
-
-@bp.route('/<string:username>', methods=['GET'])
-def route_get_user_info(username: str) -> Response:
-    user = get_user_by_username(username)
-
-    return user_resource(user)
+    return jsonify(user.dto())
 

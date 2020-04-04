@@ -6,9 +6,9 @@ class UsernameAlreadyExists(HTTPException):
     description = 'Username already exists'
 
 
-class NoSuchUsername(HTTPException):
+class NoSuchUser(HTTPException):
     code = 404
-    description = 'No such username'
+    description = 'No such user'
 
 
 class CreateUserBadRequest(HTTPException):

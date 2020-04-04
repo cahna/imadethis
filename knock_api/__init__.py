@@ -15,13 +15,17 @@ logger = logging.getLogger()
 
 def configure_app(app, config_overrides=None):
     from .models import db
-    from .security import flask_bcrypt
+    from .security import flask_bcrypt, flask_jwt
 
-    db_uri = os.environ.get('KNOCK_DB_URI') or DEFAULT_DB_URI
+    db_uri = os.getenv('KNOCK_DB_URI', DEFAULT_DB_URI)
+    secret_key = os.getenv('FLASK_SECRET_KEY', 'testkey')
+
     app.config.from_mapping(
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SECRET_KEY=secret_key,
         SQLALCHEMY_DATABASE_URI=db_uri,
-        SECRET_KEY='knockknockknock'
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        JWT_SECRET_KEY=secret_key,
+        # JWT_BLACKLIST_ENABLED=True
     )
 
     if config_overrides:
@@ -34,6 +38,7 @@ def configure_app(app, config_overrides=None):
     db.init_app(app)
     migrate.init_app(app, db)
     flask_bcrypt.init_app(app)
+    flask_jwt.init_app(app)
 
     logger.info(f'Configured for environment: {app.env}')
 

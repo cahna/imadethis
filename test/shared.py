@@ -20,6 +20,12 @@ def valid_username() -> str:
     return random_string(random.randint(1, 63))
 
 
+def auth_header(access_token: str) -> Mapping:
+    return {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+
 def verify_error_response(response: Response, code: int, message: str = None):
     assert response.status_code == code
     assert response.content_type == 'application/json'
@@ -32,39 +38,67 @@ def verify_error_response(response: Response, code: int, message: str = None):
             f'Expected error: "{message}". Instead got: "{err_msg}"'
 
 
-def verify_user_response(response: Response, username: str) -> Mapping:
+def verify_user_response(response: Response,
+                         unique_id: str = None,
+                         username: str = None) -> Mapping:
     assert response.status_code == 200
     assert response.content_type == 'application/json'
 
     user_data = response.get_json()
 
     assert 'username' in user_data
-    assert user_data['username'] == username
     assert 'unique_id' in user_data
-    id_len = len(user_data['unique_id'])
-    assert id_len == UUID_LENGTH, \
-        f'Expected id_len == {UUID_LENGTH}. Instead got: {id_len}'
     assert 'password' not in user_data
     assert 'hashed_pw' not in user_data
+
+    response_unique_id = user_data['unique_id']
+    id_len = len(response_unique_id)
+
+    assert id_len == UUID_LENGTH, \
+        f'Expected id_len == {UUID_LENGTH}. Instead got: {id_len}'
+
+    if unique_id:
+        assert response_unique_id == unique_id
+    if username:
+        assert user_data.get('username') == username
 
     return user_data
 
 
-def verify_create_user(client: FlaskClient,
-                       username: str,
-                       password: str) -> Mapping:
+def verify_auth_register_response(response: Response) -> Mapping:
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+
+    data = response.get_json()
+    token = data.get('access_token')
+
+    assert token, 'Missing auth token in response'
+    assert len(token) > 1
+
+    return data
+
+
+def verify_register_user(client: FlaskClient,
+                         username: str,
+                         password: str) -> Mapping:
     payload = dict(username=username, password=password)
-    response = client.post('/users/create',
+    response = client.post('/auth/register',
                            json=payload,
                            follow_redirects=True)
 
-    return verify_user_response(response, username)
+    return verify_auth_register_response(response)
 
 
-def verify_get_user(client: FlaskClient, username: str) -> Mapping:
-    response = client.get(f'/users/{username}', follow_redirects=True)
+def verify_get_active_user(client: FlaskClient,
+                           access_token: str,
+                           username: str = None) -> Mapping:
+    assert access_token
 
-    return verify_user_response(response, username)
+    response = client.get(f'/users/active_user',
+                          headers={'Authorization': f'Bearer {access_token}'},
+                          follow_redirects=False)
+
+    return verify_user_response(response, username=username)
 
 
 def create_thread(client: FlaskClient, users: List[str]) -> int:

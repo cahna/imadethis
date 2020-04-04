@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, Response
+from flask_jwt_extended import jwt_required
 from knock_api.models import db
 
 
@@ -15,6 +16,7 @@ def healthcheck() -> Response:
 
 
 @bp.route('/db', methods=['GET'])
+@jwt_required
 def db_healthcheck() -> Response:
     status_code = 200
     healthy = True
