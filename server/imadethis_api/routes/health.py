@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, Response
 from flask_jwt_extended import jwt_required
-from knock_api.models import db
+from imadethis_api.models import db
 
 
 bp = Blueprint('health', __name__, url_prefix='/health')

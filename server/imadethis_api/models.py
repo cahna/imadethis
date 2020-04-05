@@ -31,7 +31,6 @@ class GUID(db.TypeDecorator):
             if not isinstance(value, uuid.UUID):
                 return "%.32x" % uuid.UUID(value).int
             else:
-                # hexstring
                 return "%.32x" % value.int
 
     def process_result_value(self, value, dialect):
@@ -43,29 +42,17 @@ class GUID(db.TypeDecorator):
             return value
 
 
-class ThreadMembership(db.Model):
-    thread_id = db.Column(PK_TYPE,
-                          db.ForeignKey('thread.id'),
-                          primary_key=True)
-    user_id = db.Column(PK_TYPE,
-                        db.ForeignKey('user.id'),
-                        primary_key=True)
-    date_created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    thread = db.relationship('Thread',
-                             backref=db.backref('members', lazy=True))
-    user = db.relationship('User',
-                           backref=db.backref('belongs_to', lazy=True))
-
-
 class User(db.Model):
-    """Backrefs: 'messages' and 'belongs_to'"""
+    """Backrefs: 'builds'"""
     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
     unique_id = db.Column(GUID(),
                           nullable=False,
                           unique=True,
                           default=uuid.uuid4)
-    username = db.Column(db.String(64), index=True, nullable=False)
+    username = db.Column(db.String(64),
+                         index=True,
+                         unique=True,
+                         nullable=False)
     hashed_pw = db.Column(db.String(128), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -74,7 +61,7 @@ class User(db.Model):
             'username': self.username,
             'unique_id': self.unique_id,
             'date_created': self.date_created,
-            'threads': [t.unique_id for t in self.belongs_to],
+            'builds': [b.unique_id for b in self.builds],
         }
 
     def jwt_identity(self):
@@ -84,34 +71,41 @@ class User(db.Model):
         }
 
 
-class Thread(db.Model):
-    """Backrefs: 'members' and 'messages'"""
+# class BuildTag(db.Model):
+#     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
+#     unique_id = db.Column(GUID(),
+#                           nullable=False,
+#                           unique=True,
+#                           default=uuid.uuid4)
+#     name = db.Column(db.String(32),
+#                      index=True,
+#                      unique=True,
+#                      nullable=False)
+#     description = db.Column(db.Text)
+#     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+#     created_by = db.Column(PK_TYPE, db.ForeignKey('user.id'))
+
+
+class Build(db.Model):
     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
     unique_id = db.Column(GUID(),
                           nullable=False,
                           unique=True,
                           default=uuid.uuid4)
     name = db.Column(db.String(64), nullable=False)
-    date_created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    is_private = db.Column(db.Boolean, nullable=False, default=bool)
-    hashed_pw = db.Column(db.String(128), nullable=True)
+    description = db.Column(db.Text)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    created_by = db.Column(PK_TYPE, db.ForeignKey('user.id'))
 
-    __table_args__ = (
-        db.CheckConstraint(
-            'NOT(is_private AND hashed_pw = NULL)',
-            name='private_thread_has_pw'
-        ),
-    )
+    builder = db.relationship('User',
+                              backref=db.backref('builds', lazy=True))
 
 
-class ThreadMessage(db.Model):
-    message_id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
-    thread_id = db.Column(PK_TYPE, db.ForeignKey('thread.id'))
-    user_id = db.Column(PK_TYPE, db.ForeignKey('user.id'))
-    message = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    thread = db.relationship('Thread',
-                             backref=db.backref('messages', lazy=True))
-    user = db.relationship('User',
-                           backref=db.backref('messages', lazy=True))
+# class BuildTagsAssociation(db.Model):
+#     build_id = db.Column(PK_TYPE,
+#                          db.ForeignKey('build.id'),
+#                          primary_key=True)
+#     tag_id = db.Column(PK_TYPE,
+#                        db.ForeignKey('BuildTag.id'),
+#                        primary_key=True)

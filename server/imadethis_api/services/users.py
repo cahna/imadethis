@@ -1,7 +1,7 @@
 from typing import List
-from knock_api.security import flask_bcrypt
-from knock_api.models import db, User
-from knock_api.exceptions.users import UsernameAlreadyExists, NoSuchUser
+from imadethis_api.security import flask_bcrypt
+from imadethis_api.models import db, User
+from imadethis_api.exceptions.users import UsernameAlreadyExists, NoSuchUser
 
 
 def username_exists(username: str) -> bool:

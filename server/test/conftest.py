@@ -4,8 +4,8 @@ import pytest
 import tempfile
 from flask import Flask
 from flask.testing import FlaskClient
-from knock_api import create_app
-from knock_api.models import db
+from imadethis_api import create_app
+from imadethis_api.models import db
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, Response, request
 from flask_jwt_extended import create_access_token, jwt_required
-from knock_api.services.users import create_user
-from knock_api.validation.users import validate_create_user
+from imadethis_api.services.users import create_user
+from imadethis_api.validation.users import validate_create_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')

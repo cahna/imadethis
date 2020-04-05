@@ -5,12 +5,12 @@ with io.open('README.md', 'rt', encoding='utf8') as f:
     readme = f.read()
 
 setup(
-    name='knock_api',
+    name='imadethis_api',
     version='0.0.1',
-    url='https://github.com/cahna/knock_api/',
+    url='https://github.com/cahna/imadethis_api/',
     license='MIT',
     maintainer='Conor Heine',
-    description='Messaging service',
+    description='Server for IMadeThis',
     long_description=readme,
     long_description_content_type='text/markdown',
     classifiers=[
@@ -20,7 +20,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    packages=find_packages(include=['knock_api', 'knock_api.*']),
+    packages=find_packages(include=['imadethis_api', 'imadethis_api.*']),
     include_package_data=True,
     zip_safe=False,
     python_requires='>=3.7',

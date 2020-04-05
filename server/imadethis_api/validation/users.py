@@ -1,5 +1,5 @@
 from typing import List, Mapping
-from knock_api.exceptions.users import (
+from imadethis_api.exceptions.users import (
     CreateUserBadUsername,
     CreateUserBadPassword,
     CreateUserBadRequest,
