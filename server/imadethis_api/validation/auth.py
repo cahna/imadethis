@@ -1,5 +1,5 @@
 from typing import List, Mapping
-from imadethis_api.exceptions.users import (
+from imadethis_api.exceptions.auth import (
     CreateUserBadUsername,
     CreateUserBadPassword,
     CreateUserBadRequest,
@@ -18,7 +18,7 @@ def is_valid_password(password) -> bool:
     return len(password) > 5
 
 
-def validate_create_user(request_data: Mapping) -> List[str]:
+def validate_auth_user(request_data: Mapping) -> List[str]:
     """If valid data, return [username, password]"""
     if not isinstance(request_data, Mapping):
         raise CreateUserBadRequest()

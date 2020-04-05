@@ -1,24 +1,5 @@
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import NotFound
 
 
-class UsernameAlreadyExists(HTTPException):
-    code = 409
-    description = 'Username already exists'
-
-
-class NoSuchUser(HTTPException):
-    code = 404
+class NoSuchUser(NotFound):
     description = 'No such user'
-
-
-class CreateUserBadRequest(HTTPException):
-    code = 400
-    description = 'Bad request'
-
-
-class CreateUserBadUsername(CreateUserBadRequest):
-    description = 'Invalid username'
-
-
-class CreateUserBadPassword(CreateUserBadRequest):
-    description = 'Invalid password'

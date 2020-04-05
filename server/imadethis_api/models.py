@@ -71,6 +71,14 @@ class User(db.Model):
         }
 
 
+class JwtBlacklist(db.Model):
+    """JTIs in this table are considered revoked"""
+    id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
+    jti = db.Column(db.String(36), nullable=False)
+    user_unique_id = db.Column(PK_TYPE, db.ForeignKey('user.unique_id'))
+    blacklist_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 # class BuildTag(db.Model):
 #     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
 #     unique_id = db.Column(GUID(),

@@ -65,7 +65,7 @@ def verify_user_response(response: Response,
     return user_data
 
 
-def verify_auth_register_response(response: Response) -> Mapping:
+def verify_auth_response(response: Response) -> Mapping:
     assert response.status_code == 200
     assert response.content_type == 'application/json'
 
@@ -86,7 +86,29 @@ def verify_register_user(client: FlaskClient,
                            json=payload,
                            follow_redirects=True)
 
-    return verify_auth_register_response(response)
+    return verify_auth_response(response)
+
+
+def verify_login_user(client: FlaskClient,
+                      username: str,
+                      password: str) -> Mapping:
+    payload = dict(username=username, password=password)
+    response = client.post('/auth/login',
+                           json=payload,
+                           follow_redirects=True)
+
+    return verify_auth_response(response)
+
+
+def verify_logout_user(client: FlaskClient,
+                       access_token: str):
+    response = client.post(f'/auth/logout',
+                           headers=auth_header(access_token),
+                           follow_redirects=True)
+
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.get_json()['success']
 
 
 def verify_get_active_user(client: FlaskClient,
@@ -95,7 +117,7 @@ def verify_get_active_user(client: FlaskClient,
     assert access_token
 
     response = client.get(f'/users/active_user',
-                          headers={'Authorization': f'Bearer {access_token}'},
+                          headers=auth_header(access_token),
                           follow_redirects=False)
 
     return verify_user_response(response, username=username)

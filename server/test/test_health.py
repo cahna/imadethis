@@ -1,4 +1,3 @@
-from __future__ import annotations
 from flask import Flask
 from flask.testing import FlaskClient
 from flask_jwt_extended import create_access_token

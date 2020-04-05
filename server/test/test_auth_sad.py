@@ -1,4 +1,3 @@
-from __future__ import annotations
 from flask.testing import FlaskClient
 from .shared import verify_error_response, verify_register_user
 
@@ -47,6 +46,6 @@ def test_create_user_username_already_exists(client: FlaskClient):
     verify_error_response(response, 409, 'Username already exists')
 
 
-# def test_get_user_no_exists(client: FlaskClient):
-#     response = client.get(f'/users/IDoNotExist', follow_redirects=True)
-#     verify_error_response(response, 404, 'No such username')
+def test_logout_without_jwt(client: FlaskClient):
+    response = client.post('/auth/logout', follow_redirects=True)
+    verify_error_response(response, 401, 'Missing Authorization Header')

@@ -1,4 +1,3 @@
-from __future__ import annotations
 from werkzeug.exceptions import NotFound
 from flask.testing import FlaskClient
 from .shared import verify_error_response
