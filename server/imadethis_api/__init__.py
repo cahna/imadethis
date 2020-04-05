@@ -17,12 +17,15 @@ def configure_app(app, config_overrides=None):
     from imadethis_api.models import db
     from imadethis_api.security import flask_bcrypt, flask_jwt
 
-    db_uri = os.getenv('IMADETHIS_DB_URI', DEFAULT_DB_URI)
+    db_uri = os.getenv('IMADETHIS_DB_URI')
     secret_key = os.getenv('FLASK_SECRET_KEY', 'testkey')
+
+    if app.env == 'production' and not db_uri:
+        logger.error('Missing IMADETHIS_DB_URI for production environment!')
 
     app.config.from_mapping(
         SECRET_KEY=secret_key,
-        SQLALCHEMY_DATABASE_URI=db_uri,
+        SQLALCHEMY_DATABASE_URI=db_uri or DEFAULT_DB_URI,
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         JWT_SECRET_KEY=secret_key,
         # JWT_BLACKLIST_ENABLED=True,
@@ -32,9 +35,6 @@ def configure_app(app, config_overrides=None):
 
     if config_overrides:
         app.config.from_mapping(config_overrides)
-
-    if app.env == 'production' and not os.environ.get('IMADETHIS_DB_URI'):
-        logger.error('Missing IMADETHIS_DB_URI for production environment!')
 
     migrate = Migrate(app, db)
     db.init_app(app)
