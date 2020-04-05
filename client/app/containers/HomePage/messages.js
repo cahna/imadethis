@@ -20,8 +20,4 @@ export default defineMessages({
     id: `${scope}.loginUsernameLabel.message`,
     defaultMessage: 'Enter your username',
   },
-  submitLoginForm: {
-    id: `${scope}.submitLoginForm.message`,
-    defaultMessage: 'Login',
-  },
 });

@@ -38,13 +38,6 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
             value=""
           />
         </label>
-        <button
-          type="submit"
-        >
-          <span>
-            Login
-          </span>
-        </button>
       </form>
       <div
         class="Wrapper-sc-1umgotm-0 laCwDT"

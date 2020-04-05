@@ -26,14 +26,17 @@ jobs:
       with:
         python-version: 3.8
     - name: Install dependencies
+      working-directory: ./server
       run: |
         python -m pip install --upgrade pip
-        cd server && pip install requirements.txt
+        pip install requirements.txt
     - name: Fail build if lint errors or warnings
+      working-directory: ./server
       run: |
-        cd server && flake8 --show-source --statistics --exit-zero
+        flake8 --show-source --statistics --exit-zero
     - name: Test with pytest
+      working-directory: ./server
       run: |
         pip install pytest
-        cd server && pytest -v
+        pytest -v
 

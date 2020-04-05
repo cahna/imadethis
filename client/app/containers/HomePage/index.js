@@ -5,7 +5,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -44,7 +44,7 @@ export function HomePage({
   useInjectSaga({ key, saga });
 
   useEffect(() => {
-    // If user is defined, redirect to chat app
+    // When initial state username is not null, submit the form to load repos
     if (username && username.trim().length > 0) onSubmitForm();
   }, []);
 
@@ -75,9 +75,6 @@ export function HomePage({
               <FormattedMessage {...messages.loginUsernameLabel} />
               <Input id="username" type="text" defaultValue="" />
             </label>
-            <button type="submit">
-              <FormattedMessage {...messages.submitLoginForm} />
-            </button>
           </Form>
           <ThreadsList {...threadsListProps} />
         </Section>
@@ -95,7 +92,7 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  userThreads: makeSelectUserThreads(),
+  repos: makeSelectUserThreads(),
   username: makeSelectUsername(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
