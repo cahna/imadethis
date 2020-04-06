@@ -1,6 +1,6 @@
 # `imadethis_api`
 
-![Python application](https://github.com/cahna/imadethis_api/workflows/Python%20application/badge.svg)
+![Python application](https://github.com/cahna/imadethis/workflows/Python%20application/badge.svg)
 
 ## Usage
 
