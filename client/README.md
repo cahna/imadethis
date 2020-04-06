@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/react-boilerplate/react-boilerplate-brand/master/assets/banner-metal-optimized.jpg" alt="react boilerplate banner" align="center" />
+![React application](https://github.com/cahna/imadethis/workflows/React%20application/badge.svg)
 
 <br />
 

@@ -74,8 +74,10 @@ class User(db.Model):
 class JwtBlacklist(db.Model):
     """JTIs in this table are considered revoked"""
     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
-    jti = db.Column(db.String(36), nullable=False)
-    user_unique_id = db.Column(PK_TYPE, db.ForeignKey('user.unique_id'))
+    jti = db.Column(db.String(36), unique=True, index=True, nullable=False)
+    user_unique_id = db.Column(PK_TYPE,
+                               db.ForeignKey('user.unique_id'),
+                               nullable=False)
     blacklist_date = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -104,7 +106,7 @@ class Build(db.Model):
     description = db.Column(db.Text)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     date_updated = db.Column(db.DateTime, default=datetime.utcnow)
-    created_by = db.Column(PK_TYPE, db.ForeignKey('user.id'))
+    created_by = db.Column(PK_TYPE, db.ForeignKey('user.id'), nullable=False)
 
     builder = db.relationship('User',
                               backref=db.backref('builds', lazy=True))
