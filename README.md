@@ -1,6 +1,7 @@
 # `imadethis`
 
 ![Python application](https://github.com/cahna/imadethis/workflows/Python%20application/badge.svg)
+![React application](https://github.com/cahna/imadethis/workflows/React%20application/badge.svg)
 
 ## Development
 
