@@ -1,12 +1,11 @@
 FROM python:3.7
 
-WORKDIR /usr/src/knock_api
-#ENV PYTHONPATH=/usr/src/knock_api
+WORKDIR /usr/src/imadethis_api
 
 RUN pip install gunicorn[gevent]
 
 COPY setup.py setup.cfg README.md ./
-COPY knock_api knock_api/
+COPY imadethis_api imadethis_api/
 COPY migrations migrations/
 
 RUN python setup.py install
@@ -21,5 +20,5 @@ CMD gunicorn \
   --max-requests 10000 \
   --timeout 5 \
   --keep-alive 5 \
-  'knock_api:create_app()'
+  'imadethis_api:create_app()'
 
