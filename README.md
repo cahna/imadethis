@@ -1,8 +1,7 @@
 # `imadethis`
 
 ![Python application](https://github.com/cahna/imadethis/workflows/Python%20application/badge.svg)
-
-See `imadethis_api.apib` for API documentation.
+![React application](https://github.com/cahna/imadethis/workflows/React%20application/badge.svg)
 
 ## Development
 
