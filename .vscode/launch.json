@@ -17,6 +17,17 @@
                 "--no-reload"
             ],
             "jinja": true
+        },
+        {
+            "name": "Launch Chrome",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceRoot}/client/app",
+            "sourceMapPathOverrides": {
+                "webpack:///./app/*": "${webRoot}/*",
+                "webpack:///app/*": "${webRoot}/*"
+            }
         }
     ]
 }

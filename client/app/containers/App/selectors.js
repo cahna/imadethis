@@ -27,10 +27,10 @@ const makeSelectError = () =>
     globalState => globalState.error,
   );
 
-const makeSelectUserThreads = () =>
+const makeSelectAccessToken = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.userData.threads,
+    globalState => globalState.accessToken,
   );
 
 const makeSelectLocation = () =>
@@ -42,8 +42,8 @@ const makeSelectLocation = () =>
 export {
   selectGlobal,
   makeSelectCurrentUser,
+  makeSelectAccessToken,
   makeSelectLoading,
   makeSelectError,
-  makeSelectUserThreads,
   makeSelectLocation,
 };

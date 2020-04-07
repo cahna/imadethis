@@ -18,53 +18,10 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
       <h2
         class="H2-egphza-0 HsCXl"
       >
-        <span>
-          Login to begin
-        </span>
+        Hello, 
+        
+        !
       </h2>
-      <form
-        class="Form-dmhz4x-0 ZClLh"
-      >
-        <label
-          for="username"
-        >
-          <span>
-            Enter your username
-          </span>
-          <input
-            class="Input-sc-19rkjmi-0 gyJaEd"
-            id="username"
-            type="text"
-            value=""
-          />
-        </label>
-      </form>
-      <div
-        class="Wrapper-sc-1umgotm-0 laCwDT"
-      >
-        <ul
-          class="Ul-mwnq6h-0 jcxXFy"
-        >
-          <li
-            class="Wrapper-euo0oy-0 jLvxtc"
-          >
-            <div
-              class="Item-sc-3y9mie-0 fKXSkT"
-            >
-              <div
-                class="Wrapper-sn5jmo-0 brzaIf"
-              >
-                <a
-                  class="A-br8h0y-0 ThreadLink-hsr5or-0 fGgSCp"
-                  target="_blank"
-                >
-                  +undefined
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
     </section>
   </div>
 </article>

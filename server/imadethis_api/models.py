@@ -75,7 +75,7 @@ class JwtBlacklist(db.Model):
     """JTIs in this table are considered revoked"""
     id = db.Column(PK_TYPE, primary_key=True, autoincrement=True)
     jti = db.Column(db.String(36), unique=True, index=True, nullable=False)
-    user_unique_id = db.Column(PK_TYPE,
+    user_unique_id = db.Column(GUID(),
                                db.ForeignKey('user.unique_id'),
                                nullable=False)
     blacklist_date = db.Column(db.DateTime, default=datetime.utcnow)

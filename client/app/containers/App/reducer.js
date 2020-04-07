@@ -8,41 +8,31 @@
  */
 
 import produce from 'immer';
-import {
-  LOAD_USER_THREADS_SUCCESS,
-  LOAD_USER_THREADS,
-  LOAD_USER_THREADS_ERROR,
-} from './constants';
+import { REQUEST_LOGOUT, LOGOUT_FINISHED } from './constants';
 
 // The initial state of the App
 export const initialState = {
   loading: false,
   error: false,
-  currentUser: false,
-  userData: {
-    threads: false,
+  currentUser: {
+    username: null,
+    uniqueId: null,
   },
+  accessToken: localStorage.getItem('accessToken'),
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const appReducer = (state = initialState, action) =>
+const appReducer = (state = initialState, { type, payload }) =>
   produce(state, draft => {
-    switch (action.type) {
-      case LOAD_USER_THREADS:
+    switch (type) {
+      case REQUEST_LOGOUT:
         draft.loading = true;
         draft.error = false;
-        draft.userData.threads = false;
         break;
-
-      case LOAD_USER_THREADS_SUCCESS:
-        draft.userData.threads = action.threads;
+      case LOGOUT_FINISHED:
         draft.loading = false;
-        draft.currentUser = action.username;
-        break;
-
-      case LOAD_USER_THREADS_ERROR:
-        draft.error = action.error;
-        draft.loading = false;
+        draft.error = !payload.success;
+        draft.accessToken = null;
         break;
     }
   });

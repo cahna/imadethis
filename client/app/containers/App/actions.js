@@ -15,49 +15,11 @@
  *    }
  */
 
-import {
-  LOAD_USER_THREADS,
-  LOAD_USER_THREADS_SUCCESS,
-  LOAD_USER_THREADS_ERROR,
-} from './constants';
+import { LOGOUT_FINISHED } from './constants';
 
-/**
- * Load threads for a user, this action starts the request saga
- *
- * @return {object} An action object with a type of LOAD_USER_THREADS
- */
-export function loadUserThreads() {
+export function logoutUserFinished(success) {
   return {
-    type: LOAD_USER_THREADS,
-  };
-}
-
-/**
- * Dispatched when the threads for a user are loaded by the request saga
- *
- * @param  {array} threads The repository data
- * @param  {string} username The current username
- *
- * @return {object}      An action object with a type of LOAD_USER_THREADS_SUCCESS passing the threads
- */
-export function userThreadsLoaded(threads, username) {
-  return {
-    type: LOAD_USER_THREADS_SUCCESS,
-    threads,
-    username,
-  };
-}
-
-/**
- * Dispatched when loading the threads for a user fails
- *
- * @param  {object} error The error
- *
- * @return {object}       An action object with a type of LOAD_USER_THREADS_ERROR passing the error
- */
-export function userThreadLoadingError(error) {
-  return {
-    type: LOAD_USER_THREADS_ERROR,
-    error,
+    type: LOGOUT_FINISHED,
+    payload: { success },
   };
 }

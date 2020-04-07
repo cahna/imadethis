@@ -5,8 +5,9 @@
  *
  */
 
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+// import { push } from 'connected-react-router';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
@@ -14,45 +15,36 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
+// import { useInjectSaga } from 'utils/injectSaga';
+import H2 from 'components/H2';
 import {
-  makeSelectUserThreads,
+  makeSelectAccessToken,
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
-import H2 from 'components/H2';
-import ThreadsList from 'components/ThreadsList';
-import Form from './Form';
-import Input from './Input';
 import Section from './Section';
-import { loadUserThreads } from '../App/actions';
+
 import { makeSelectUsername } from './selectors';
 import messages from './messages';
 import reducer from './reducer';
-import saga from './saga';
+// import saga from './saga';
 
 const key = 'home';
 
 export function HomePage({
+  // accessToken,
   username,
-  loading,
-  error,
-  userThreads,
-  onSubmitForm,
+  // loading,
+  // error,
+  // dispatch,
 }) {
   useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
+  // useInjectSaga({ key, saga });
 
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (username && username.trim().length > 0) onSubmitForm();
-  }, []);
-
-  const threadsListProps = {
-    loading,
-    error,
-    userThreads,
-  };
+  // if (!accessToken) {
+  //   dispatch(push('/login'));
+  //   return <div>Redirecting...</div>;
+  // }
 
   return (
     <article>
@@ -67,16 +59,7 @@ export function HomePage({
           </h1>
         </Section>
         <Section>
-          <H2>
-            <FormattedMessage {...messages.loginHeader} />
-          </H2>
-          <Form onSubmit={onSubmitForm}>
-            <label htmlFor="username">
-              <FormattedMessage {...messages.loginUsernameLabel} />
-              <Input id="username" type="text" defaultValue="" />
-            </label>
-          </Form>
-          <ThreadsList {...threadsListProps} />
+          <H2>Hello, {username}!</H2>
         </Section>
       </div>
     </article>
@@ -86,24 +69,21 @@ export function HomePage({
 HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  userThreads: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onSubmitForm: PropTypes.func,
   username: PropTypes.string,
+  accessToken: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectUserThreads(),
   username: makeSelectUsername(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  accessToken: makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onSubmitForm: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadUserThreads());
-    },
+    dispatch,
   };
 }
 

@@ -9,8 +9,5 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const LOAD_USER_THREADS = 'boilerplate/App/LOAD_USER_THREADS';
-export const LOAD_USER_THREADS_SUCCESS =
-  'boilerplate/App/LOAD_USER_THREADS_SUCCESS';
-export const LOAD_USER_THREADS_ERROR =
-  'boilerplate/App/LOAD_USER_THREADS_ERROR';
+export const REQUEST_LOGOUT = 'imadethis/App/REQUEST_LOGOUT';
+export const LOGOUT_FINISHED = 'imadethis/App/LOGOUT_FINISHED';
