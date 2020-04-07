@@ -1,5 +1,6 @@
 from flask.testing import FlaskClient
-from .shared import verify_error_response, verify_register_user
+from .shared.response import verify_error_response
+from .shared.auth import verify_register_user
 
 
 def test_create_user_bad_request(client: FlaskClient):

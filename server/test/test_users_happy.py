@@ -1,26 +1,28 @@
 from flask.testing import FlaskClient
-from .shared import (
-    auth_header,
+from .shared.request import auth_header
+from .shared.response import verify_error_response
+from .shared.auth import (
     verify_register_user,
+    verify_login_user,
     verify_get_active_user,
     verify_logout_user,
-    verify_error_response
 )
 
 
 def test_get_existing_user(client: FlaskClient):
     username = 'abc123'
     password = 'P4ssW0rD:D'
-    data = verify_register_user(client, username, password)
-    verify_get_active_user(client, data.get('access_token'), username)
+    verify_register_user(client, username, password)
+    access_token = verify_login_user(client, username, password)
+    verify_get_active_user(client, access_token, username)
 
 
 def test_register_then_actions_then_logout(client: FlaskClient):
     # Register a new user
     username = 'JonathanMoffett'
     password = '$ugarfoot'
-    data = verify_register_user(client, username, password)
-    access_token = data.get('access_token')
+    verify_register_user(client, username, password)
+    access_token = verify_login_user(client, username, password)
 
     # Perform actions with valid token
     verify_get_active_user(client, access_token, username)

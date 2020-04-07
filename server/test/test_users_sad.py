@@ -1,6 +1,6 @@
 from werkzeug.exceptions import NotFound
 from flask.testing import FlaskClient
-from .shared import verify_error_response
+from .shared.response import verify_error_response
 
 
 def test_get_user_not_exists(client: FlaskClient):

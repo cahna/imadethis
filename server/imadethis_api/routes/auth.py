@@ -16,9 +16,8 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 def register() -> Response:
     username, password = validate_auth_user(request.get_json())
     user = auth.create_user(username, password)
-    token = create_access_token(identity=user.jwt_identity())
 
-    return jsonify(access_token=token)
+    return jsonify({'success': bool(user)})
 
 
 @bp.route('/login', methods=['POST'])

@@ -1,9 +1,9 @@
 FORMAT: 1A
 HOST: http://localhost:5000
 
-# knock_api
+# imadethis_api
 
-Knock Interview API 
+API for IMadeThis
 
 # Group health
 
@@ -11,7 +11,7 @@ Healthcheck endpoint.
 
 ## [/health]
 
-### Check current status [GET[
+### Check current status [GET]
 + Response 200 (application/json)
 
         {
@@ -19,57 +19,65 @@ Healthcheck endpoint.
             "details": ""
         }
 
-# Group Thread
+# Group Authentication
 
-Manage message threads.
+Manage accounts and sessions.
 
-## [/thread]
+## [/auth/register]
 
-### Create a thread on behalf of a user [POST]
+### Create a new user account [POST]
 + Request (application/json)
 
         {
-            "users": [
-                "kiefer",
-                "jeff_goldblum"
-            ]
+            "username": "TestUser",
+            "password": "TestPass",
         }
 
 + Response 200 (application/json)
 
         {
-            "thread_id": 123
+            "success": true
         }
 
-## [/thread/{thread_id}/{username}]
+## [/auth/login]
 
-+ Parameters
-    + thread_id (number, required) - ID of existing thread for message
-    + username (string, required) - Existing username identifying poster of message
-
-### Create a message on behalf of a user on a thread [POST]
+### Login to establish a session [POST]
 + Request (application/json)
 
         {
-            "message": "This is a message!"
+            "username": "TestUser",
+            "password": "TestPass",
         }
 
-+ Response 204 (application/json)
-
-        {}
-        
-## [/thread/{thread_id}]
-
-+ Parameters
-    + thread_id (number, required) - ID of existing thread
-
-### Retrieve thread messages [GET]
 + Response 200 (application/json)
 
         {
-            "messages": [
-                { "username": "kiefer", "message": "Hello world!" },
-                { "username": "jeff_goldblum", "message": "This is a message!" }
-            }
+            "access_token": "_JWT_TOKEN_"
         }
 
+## [/auth/active_user]
+
+### Retrieve user information associated with session token [GET]
++ Request
+    + Headers
+
+            Authentication: Bearer _JWT_TOKEN_
+
++ Response 200 (application/json)
+
+        {
+            "username": "TestUser",
+            "unique_id": "_UUID_"
+        }
+
+## [/auth/logout]
+
+### End user session [POST]
++ Request
+    + Headers
+
+            Authentication: Bearer _JWT_TOKEN_
+
++ Response 200 (application/json)
+
+        {"success": true}
