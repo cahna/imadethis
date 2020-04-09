@@ -1,13 +1,16 @@
-/*
- * AppConstants
- * Each action has a corresponding type, which the reducer knows and picks up on.
- * To avoid weird typos between the reducer and the actions, we save them as
- * constants here. We prefix them with 'yourproject/YourComponent' so we avoid
- * reducers accidentally picking up actions they shouldn't.
- *
- * Follow this format:
- * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
+/**
+ * Action names
  */
-
 export const REQUEST_LOGOUT = 'imadethis/App/REQUEST_LOGOUT';
 export const LOGOUT_FINISHED = 'imadethis/App/LOGOUT_FINISHED';
+
+/**
+ * API routes
+ */
+export const API_LOGIN = '/api/auth/login';
+export const API_LOGOUT = '/api/auth/logout';
+
+/**
+ * Other
+ */
+export const LOCAL_TOKEN_NAME = 'accessToken';

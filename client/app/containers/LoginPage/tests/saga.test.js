@@ -1,10 +1,19 @@
-import { put, takeLatest } from 'redux-saga/effects';
-
+import { takeLatest } from 'redux-saga/effects';
+import { testSaga } from 'redux-saga-test-plan';
+import request from 'utils/request';
+import { API_LOGIN } from 'containers/App/constants';
 import { REQUEST_LOGIN } from '../constants';
 import { loginSuccess, loginFailure } from '../actions';
 import loginPageSaga, { submitLogin } from '../saga';
 
+const username = 'TestUser';
+const password = 'TestPassword';
 const accessToken = '_JWT_';
+const options = {
+  body: JSON.stringify({ username, password }),
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+};
 
 /* eslint-disable redux-saga/yield-effects */
 describe('loginPageSaga', () => {
@@ -20,37 +29,27 @@ describe('loginPageSaga', () => {
 });
 
 describe('submitLogin saga generator', () => {
-  let submitLoginGenerator;
-
-  beforeEach(() => {
-    submitLoginGenerator = submitLogin();
-
-    const selectUsernameDescriptor = submitLoginGenerator.next().value;
-    expect(selectUsernameDescriptor).toMatchSnapshot();
-
-    const selectPasswordDescriptor = submitLoginGenerator.next().value;
-    expect(selectPasswordDescriptor).toMatchSnapshot();
+  it('handles successful login', () => {
+    testSaga(submitLogin)
+      .next()
+      .next(username)
+      .next(password)
+      .call(request, API_LOGIN, options)
+      .next({ access_token: accessToken })
+      .put(loginSuccess(accessToken))
+      .next()
+      .isDone();
   });
 
-  afterEach(() => {
-    expect(submitLoginGenerator.next().done).toEqual(true);
-  });
-
-  it('should dispatch the loginSuccess action if request is successfull', () => {
-    const callApiDescriptor = submitLoginGenerator.next({
-      access_token: accessToken,
-    }).value;
-    expect(callApiDescriptor).toMatchSnapshot();
-
-    const putDescriptor = submitLoginGenerator.next().value;
-    expect(putDescriptor).toEqual(put(loginSuccess(accessToken)));
-  });
-
-  it('should call the repoLoadingError action if the response errors', () => {
-    const callApiDescriptor = submitLoginGenerator.throw().value;
-    expect(callApiDescriptor).toMatchSnapshot();
-
-    const putDescriptor = submitLoginGenerator.next().value;
-    expect(putDescriptor).toEqual(put(loginFailure()));
+  it('handles failed login', () => {
+    testSaga(submitLogin)
+      .next()
+      .next(username)
+      .next(password)
+      .call(request, API_LOGIN, options)
+      .throw('dummy')
+      .put(loginFailure())
+      .next()
+      .isDone();
   });
 });

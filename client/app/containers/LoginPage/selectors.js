@@ -28,6 +28,7 @@ const makeSelectError = () =>
   );
 
 export {
+  selectLoginPageState,
   makeSelectUsername,
   makeSelectPassword,
   makeSelectLoading,

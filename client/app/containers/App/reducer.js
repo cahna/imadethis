@@ -1,14 +1,5 @@
-/*
- * AppReducer
- *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
- *
- */
-
 import produce from 'immer';
-import { REQUEST_LOGOUT, LOGOUT_FINISHED } from './constants';
+import { REQUEST_LOGOUT, LOGOUT_FINISHED, LOCAL_TOKEN_NAME } from './constants';
 
 // The initial state of the App
 export const initialState = {
@@ -18,7 +9,7 @@ export const initialState = {
     username: null,
     uniqueId: null,
   },
-  accessToken: localStorage.getItem('accessToken'),
+  accessToken: localStorage.getItem(LOCAL_TOKEN_NAME),
 };
 
 /* eslint-disable default-case, no-param-reassign */
