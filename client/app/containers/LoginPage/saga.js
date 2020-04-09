@@ -9,27 +9,27 @@ import { loginSuccess, loginFailure } from './actions';
  * Send authentication request
  */
 export function* submitLogin() {
-  const username = yield select(makeSelectUsername());
-  const password = yield select(makeSelectPassword());
-
-  const requestURL = `/api/auth/login`;
-  const options = {
-    body: JSON.stringify({ username, password }),
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
-
   try {
+    const username = yield select(makeSelectUsername());
+    const password = yield select(makeSelectPassword());
+
+    const requestURL = '/api/auth/login';
+    const options = {
+      body: JSON.stringify({ username, password }),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    };
     const { access_token: accessToken } = yield call(
       request,
       requestURL,
       options,
     );
-    localStorage.setItem('accessToken', accessToken);
+
     yield put(loginSuccess(accessToken));
+    localStorage.setItem('accessToken', accessToken);
   } catch (error) {
     yield put(loginFailure());
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
   }
 }
 

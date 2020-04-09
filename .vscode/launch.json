@@ -19,14 +19,21 @@
             "jinja": true
         },
         {
-            "name": "Launch Chrome",
-            "type": "chrome",
+            "name": "Debug Jest",
+            "type": "node",
             "request": "launch",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}/client/app",
-            "sourceMapPathOverrides": {
-                "webpack:///./app/*": "${webRoot}/*",
-                "webpack:///app/*": "${webRoot}/*"
+            "address": "localhost",
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}/client",
+            "disableOptimisticBPs": true,
+            "runtimeArgs": [
+                "--inspect-brk",
+                "${workspaceRoot}/client/node_modules/.bin/jest",
+                "--runInBand"
+            ],
+            "port": 9229,
+            "env": {
+                "NODE_ENV": "test"
             }
         }
     ]
