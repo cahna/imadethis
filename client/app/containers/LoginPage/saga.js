@@ -12,7 +12,7 @@ export function* submitLogin() {
   const username = yield select(makeSelectUsername());
   const password = yield select(makeSelectPassword());
 
-  const requestURL = `http://localhost:5000/auth/login`;
+  const requestURL = `/api/auth/login`;
   const options = {
     body: JSON.stringify({ username, password }),
     method: 'POST',

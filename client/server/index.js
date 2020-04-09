@@ -1,6 +1,7 @@
 /* eslint consistent-return:0 import/order:0 */
 
 const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const logger = require('./logger');
 
 const argv = require('./argv');
@@ -13,9 +14,6 @@ const ngrok =
     : false;
 const { resolve } = require('path');
 const app = express();
-
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
@@ -34,6 +32,18 @@ app.get('*.js', (req, res, next) => {
   res.set('Content-Encoding', 'gzip');
   next();
 });
+
+// Proxy to development API server
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: 'http://localhost:5000',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api': '/',
+    },
+  }),
+);
 
 // Start your app.
 app.listen(port, host, async err => {

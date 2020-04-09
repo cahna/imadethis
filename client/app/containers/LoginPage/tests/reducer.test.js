@@ -1,6 +1,12 @@
-// import produce from 'immer';
+import produce from 'immer';
 import loginPageReducer from '../reducer';
-// import { someAction } from '../actions';
+import {
+  changeUsername,
+  changePassword,
+  submitLogin,
+  loginSuccess,
+  loginFailure,
+} from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
 describe('loginPageReducer', () => {
@@ -8,10 +14,10 @@ describe('loginPageReducer', () => {
 
   beforeEach(() => {
     state = {
-      loading: false,
-      loginError: false,
       password: '',
       username: '',
+      loading: false,
+      loginError: false,
       usernameError: false,
       passwordError: false,
     };
@@ -22,17 +28,85 @@ describe('loginPageReducer', () => {
     expect(loginPageReducer(undefined, {})).toEqual(expectedResult);
   });
 
-  /**
-   * Example state change comparison
-   *
-   * it('should handle the someAction action correctly', () => {
-   *   const expectedResult = produce(state, draft => {
-   *     draft.loading = true;
-   *     draft.error = false;
-   *     draft.userData.nested = false;
-   *   });
-   *
-   *   expect(appReducer(state, someAction())).toEqual(expectedResult);
-   * });
-   */
+  it('should handle changeUsername correctly', () => {
+    expect(loginPageReducer(state, changeUsername('T'))).toEqual(
+      produce(state, draft => {
+        draft.username = 'T';
+      }),
+    );
+    expect(loginPageReducer(state, changeUsername('Te'))).toEqual(
+      produce(state, draft => {
+        draft.username = 'Te';
+      }),
+    );
+    expect(loginPageReducer(state, changeUsername('Tes'))).toEqual(
+      produce(state, draft => {
+        draft.username = 'Tes';
+      }),
+    );
+    expect(loginPageReducer(state, changeUsername('Test'))).toEqual(
+      produce(state, draft => {
+        draft.username = 'Test';
+      }),
+    );
+    expect(loginPageReducer(state, changeUsername())).toEqual(
+      produce(state, draft => {
+        draft.username = '';
+      }),
+    );
+  });
+
+  it('should handle changePassword correctly', () => {
+    expect(loginPageReducer(state, changePassword('T'))).toEqual(
+      produce(state, draft => {
+        draft.password = 'T';
+      }),
+    );
+    expect(loginPageReducer(state, changePassword('Te'))).toEqual(
+      produce(state, draft => {
+        draft.password = 'Te';
+      }),
+    );
+    expect(loginPageReducer(state, changePassword('Tes'))).toEqual(
+      produce(state, draft => {
+        draft.password = 'Tes';
+      }),
+    );
+    expect(loginPageReducer(state, changePassword('Test'))).toEqual(
+      produce(state, draft => {
+        draft.password = 'Test';
+      }),
+    );
+    expect(loginPageReducer(state, changePassword())).toEqual(
+      produce(state, draft => {
+        draft.password = '';
+      }),
+    );
+  });
+
+  it('should handle loginSuccess correctly', () => {
+    expect(loginPageReducer(state, loginSuccess())).toEqual(
+      produce(state, draft => {
+        draft.loginError = false;
+        draft.loading = false;
+      }),
+    );
+  });
+
+  it('should handle loginFailure correctly', () => {
+    expect(loginPageReducer(state, loginFailure())).toEqual(
+      produce(state, draft => {
+        draft.loginError = true;
+      }),
+    );
+  });
+
+  it('should handle submitLogin correctly', () => {
+    expect(loginPageReducer(state, submitLogin())).toEqual(
+      produce(state, draft => {
+        draft.loginError = false;
+        draft.loading = true;
+      }),
+    );
+  });
 });
