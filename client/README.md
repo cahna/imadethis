@@ -1,4 +1,4 @@
-![React application](https://github.com/cahna/imadethis/workflows/React%20application/badge.svg)
+![React client](https://github.com/cahna/imadethis/workflows/React%20client/badge.svg)
 
 <br />
 
