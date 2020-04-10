@@ -1,48 +1,70 @@
-/*
- * AppReducer
- *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
- *
- */
-
 import produce from 'immer';
 import {
-  LOAD_USER_THREADS_SUCCESS,
-  LOAD_USER_THREADS,
-  LOAD_USER_THREADS_ERROR,
+  LOCAL_TOKEN_NAME,
+  REQUEST_LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  USER_LOGGED_IN,
+  LOADING_ACTIVE_USER,
+  ACTIVE_USER_LOADED,
 } from './constants';
 
 // The initial state of the App
 export const initialState = {
   loading: false,
   error: false,
-  currentUser: false,
-  userData: {
-    threads: false,
+  currentUser: {
+    username: null,
+    uniqueId: null,
   },
+  accessToken: localStorage.getItem(LOCAL_TOKEN_NAME),
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const appReducer = (state = initialState, action) =>
+const appReducer = (state = initialState, { type, payload }) =>
   produce(state, draft => {
-    switch (action.type) {
-      case LOAD_USER_THREADS:
+    switch (type) {
+      case REQUEST_LOGOUT:
         draft.loading = true;
         draft.error = false;
-        draft.userData.threads = false;
         break;
-
-      case LOAD_USER_THREADS_SUCCESS:
-        draft.userData.threads = action.threads;
+      case LOGOUT_SUCCESS:
         draft.loading = false;
-        draft.currentUser = action.username;
+        draft.error = false;
+        draft.accessToken = null;
+        draft.currentUser = {
+          username: null,
+          uniqueId: null,
+        };
         break;
-
-      case LOAD_USER_THREADS_ERROR:
-        draft.error = action.error;
+      case LOGOUT_FAILED:
         draft.loading = false;
+        draft.error = true;
+        draft.accessToken = null;
+        draft.currentUser = {
+          username: null,
+          uniqueId: null,
+        };
+        break;
+      case USER_LOGGED_IN:
+        draft.loading = false;
+        draft.error = false;
+        draft.accessToken = payload.accessToken;
+        break;
+      case LOADING_ACTIVE_USER:
+        draft.loading = true;
+        break;
+      case ACTIVE_USER_LOADED:
+        draft.loading = false;
+        draft.error = payload.error;
+
+        if (payload.currentUser) {
+          draft.currentUser = payload.currentUser;
+        } else {
+          draft.currentUser = initialState.currentUser;
+          draft.accessToken = null;
+          localStorage.removeItem(LOCAL_TOKEN_NAME);
+        }
         break;
     }
   });

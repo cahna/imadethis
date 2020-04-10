@@ -1,5 +1,5 @@
 ---
-name: Python application
+name: Python server
 
 on:
   push:
@@ -36,5 +36,6 @@ jobs:
         working-directory: ./server
         run: |
           pip install pytest
-          pytest -v
+          coverage run -m pytest
+          coverage report
 

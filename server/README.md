@@ -70,45 +70,6 @@ docker run -d --name postgres-imadethis -p 5432:5432 -e POSTGRES_USER=imadethis 
 export IMADETHIS_DB_URI=postgresql://imadethis:imadethis@localhost:5432/imadethis
 ```
 
-## Manual API Testing
-
-### Healthcheck
-
-```
-curl -L -f http://127.0.0.1:5000/health
-```
-
-### Register a user
-
-```
-curl -X POST -H 'Content-Type: application/json' \
-    -d '{"username":"testuser","password":"abcd1234"}' \
-    -L http://127.0.0.1:5000/auth/register
-```
-
-Example response:
-
-```
-{"access_token":"$SIGNED_TOKEN$"}
-```
-
-### Get info for active user
-
-```
-curl -H 'Authorization: Bearer $SIGNED_TOKEN$' \
-    -L http://127.0.0.1:5000/users/active_user
-```
-
-Example response:
-
-```
-{
-    "username": "testuser",
-    "unique_id": "$UUID$",
-    ...
-}
-```
-
 ## Production deployment
 
 ### DB Migrations

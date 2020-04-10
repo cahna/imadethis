@@ -1,8 +1,7 @@
-from . import auth, users, health
+from . import auth, health
 
 
 blueprints = [
     health.bp,
     auth.bp,
-    users.bp,
 ]

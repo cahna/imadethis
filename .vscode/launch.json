@@ -17,6 +17,24 @@
                 "--no-reload"
             ],
             "jinja": true
+        },
+        {
+            "name": "Debug Jest",
+            "type": "node",
+            "request": "launch",
+            "address": "localhost",
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}/client",
+            "disableOptimisticBPs": true,
+            "runtimeArgs": [
+                "--inspect-brk",
+                "${workspaceRoot}/client/node_modules/.bin/jest",
+                "--runInBand"
+            ],
+            "port": 9229,
+            "env": {
+                "NODE_ENV": "test"
+            }
         }
     ]
 }

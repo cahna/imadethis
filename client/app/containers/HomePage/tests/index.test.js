@@ -15,15 +15,19 @@ describe('<HomePage />', () => {
   });
 
   it('should render and match the snapshot', () => {
+    const dispatch = jest.fn();
+
     const {
       container: { firstChild },
     } = render(
       <Provider store={store}>
         <IntlProvider locale="en">
-          <HomePage loading={false} error={false} userThreads={[]} />
+          <HomePage loading={false} error={false} username="TestUser" />
         </IntlProvider>
       </Provider>,
     );
+
+    expect(dispatch).not.toHaveBeenCalled();
     expect(firstChild).toMatchSnapshot();
   });
 });

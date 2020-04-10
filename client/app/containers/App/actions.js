@@ -16,48 +16,31 @@
  */
 
 import {
-  LOAD_USER_THREADS,
-  LOAD_USER_THREADS_SUCCESS,
-  LOAD_USER_THREADS_ERROR,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  USER_LOGGED_IN,
+  GET_ACTIVE_USER,
+  ACTIVE_USER_LOADED,
+  LOADING_ACTIVE_USER,
+  REQUEST_LOGOUT,
 } from './constants';
 
-/**
- * Load threads for a user, this action starts the request saga
- *
- * @return {object} An action object with a type of LOAD_USER_THREADS
- */
-export function loadUserThreads() {
-  return {
-    type: LOAD_USER_THREADS,
-  };
-}
+export const logoutUser = () => ({ type: REQUEST_LOGOUT });
 
-/**
- * Dispatched when the threads for a user are loaded by the request saga
- *
- * @param  {array} threads The repository data
- * @param  {string} username The current username
- *
- * @return {object}      An action object with a type of LOAD_USER_THREADS_SUCCESS passing the threads
- */
-export function userThreadsLoaded(threads, username) {
-  return {
-    type: LOAD_USER_THREADS_SUCCESS,
-    threads,
-    username,
-  };
-}
+export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
 
-/**
- * Dispatched when loading the threads for a user fails
- *
- * @param  {object} error The error
- *
- * @return {object}       An action object with a type of LOAD_USER_THREADS_ERROR passing the error
- */
-export function userThreadLoadingError(error) {
-  return {
-    type: LOAD_USER_THREADS_ERROR,
-    error,
-  };
-}
+export const logoutFailed = () => ({ type: LOGOUT_FAILED });
+
+export const getActiveUser = () => ({ type: GET_ACTIVE_USER });
+
+export const loadingActiveUser = () => ({ type: LOADING_ACTIVE_USER });
+
+export const userLoggedIn = accessToken => ({
+  type: USER_LOGGED_IN,
+  payload: { accessToken },
+});
+
+export const activeUserLoaded = (currentUser, error = false) => ({
+  type: ACTIVE_USER_LOADED,
+  payload: { currentUser, error },
+});

@@ -1,5 +1,5 @@
 ---
-name: React application
+name: React client
 
 on:
   push:
