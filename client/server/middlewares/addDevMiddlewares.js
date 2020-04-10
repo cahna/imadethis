@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
@@ -13,6 +14,21 @@ function createWebpackMiddleware(compiler, publicPath) {
 }
 
 module.exports = function addDevMiddlewares(app, webpackConfig) {
+  // Proxy to development API server
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'http://localhost:5000',
+      changeOrigin: true,
+      logLevel: 'debug',
+      autoRewrite: true,
+      followRedirects: true,
+      pathRewrite: {
+        '^/api': '/',
+      },
+    }),
+  );
+
   const compiler = webpack(webpackConfig);
   const middleware = createWebpackMiddleware(
     compiler,

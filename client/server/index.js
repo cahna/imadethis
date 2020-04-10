@@ -1,7 +1,6 @@
 /* eslint consistent-return:0 import/order:0 */
 
 const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const logger = require('./logger');
 
 const argv = require('./argv');
@@ -25,18 +24,6 @@ setup(app, {
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
-
-// Proxy to development API server
-app.use(
-  '/api/**',
-  createProxyMiddleware({
-    target: 'http://localhost:5000',
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api': '/',
-    },
-  }),
-);
 
 // use the gzipped bundle
 app.get('*.js', (req, res, next) => {

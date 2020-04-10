@@ -17,7 +17,10 @@ export function* submitLogin() {
   const options = {
     body: JSON.stringify({ username, password }),
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
   };
 
   try {

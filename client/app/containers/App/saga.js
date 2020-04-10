@@ -26,6 +26,7 @@ export function* logoutUser() {
   const options = {
     method: 'POST',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
@@ -55,6 +56,7 @@ export function* loadActiveUser() {
   const options = {
     method: 'GET',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
