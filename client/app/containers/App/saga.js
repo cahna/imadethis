@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
 
 import request from 'utils/request';
 
@@ -7,8 +6,8 @@ import {
   REQUEST_LOGOUT,
   API_LOGOUT,
   LOCAL_TOKEN_NAME,
-  USER_LOGGED_IN,
   API_ACTIVE_USER,
+  GET_ACTIVE_USER,
 } from './constants';
 import { makeSelectAccessToken } from './selectors';
 import {
@@ -65,7 +64,6 @@ export function* loadActiveUser() {
   try {
     const activeUser = yield call(request, API_ACTIVE_USER, options);
     yield put(activeUserLoaded(activeUser));
-    yield put(push('/'));
   } catch (err) {
     yield put(activeUserLoaded(null, true));
   }
@@ -75,6 +73,6 @@ export function* loadActiveUser() {
  * Root saga manages watcher lifecycle
  */
 export default function* appSaga() {
-  yield takeLatest(USER_LOGGED_IN, loadActiveUser);
+  yield takeLatest(GET_ACTIVE_USER, loadActiveUser);
   yield takeLatest(REQUEST_LOGOUT, logoutUser);
 }

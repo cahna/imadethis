@@ -20,3 +20,4 @@ export const API_ACTIVE_USER = '/api/auth/active_user';
  * Configuration / other
  */
 export const LOCAL_TOKEN_NAME = 'accessToken';
+export const APP_KEY = 'global';

@@ -32,11 +32,19 @@ const appReducer = (state = initialState, { type, payload }) =>
         draft.loading = false;
         draft.error = false;
         draft.accessToken = null;
+        draft.currentUser = {
+          username: null,
+          uniqueId: null,
+        };
         break;
       case LOGOUT_FAILED:
         draft.loading = false;
         draft.error = true;
         draft.accessToken = null;
+        draft.currentUser = {
+          username: null,
+          uniqueId: null,
+        };
         break;
       case USER_LOGGED_IN:
         draft.loading = false;
@@ -52,6 +60,10 @@ const appReducer = (state = initialState, { type, payload }) =>
 
         if (payload.currentUser) {
           draft.currentUser = payload.currentUser;
+        } else {
+          draft.currentUser = initialState.currentUser;
+          draft.accessToken = null;
+          localStorage.removeItem(LOCAL_TOKEN_NAME);
         }
         break;
     }

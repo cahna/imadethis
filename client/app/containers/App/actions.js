@@ -22,7 +22,10 @@ import {
   GET_ACTIVE_USER,
   ACTIVE_USER_LOADED,
   LOADING_ACTIVE_USER,
+  REQUEST_LOGOUT,
 } from './constants';
+
+export const logoutUser = () => ({ type: REQUEST_LOGOUT });
 
 export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
 

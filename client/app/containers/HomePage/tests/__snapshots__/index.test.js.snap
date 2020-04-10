@@ -22,6 +22,21 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
         !
       </h2>
     </section>
+    <section
+      class="Section-sc-1eulrsm-0 eTEsZl"
+    >
+      <div
+        class="Wrapper-sc-5dsnpv-0 jpYyqh"
+      >
+        <a
+          class="A-t53uvo-0 imPlZY"
+        >
+          <span>
+            Logout
+          </span>
+        </a>
+      </div>
+    </section>
   </div>
 </article>
 `;

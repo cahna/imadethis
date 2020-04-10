@@ -1,49 +1,29 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-// import { push } from 'connected-react-router';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-// import { useInjectReducer } from 'utils/injectReducer';
-// import { useInjectSaga } from 'utils/injectSaga';
 import H2 from 'components/H2';
+import StyledButton from 'components/Button';
 import {
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
+import { logoutUser } from 'containers/App/actions';
 
 import Section from './Section';
 import messages from './messages';
-// import reducer from './reducer';
-// import saga from './saga';
 
-// const key = 'home';
-
-export function HomePage({
-  currentUser,
-  // loading,
-  // error,
-  // dispatch,
-}) {
-  // useInjectReducer({ key, reducer });
-  // useInjectSaga({ key, saga });
-
+export function HomePage({ currentUser, doLogoutUser }) {
   return (
     <article>
       <Helmet>
-        <title>Enterprise-Standard Chat</title>
-        <meta name="description" content="Chat for tryhards" />
+        <title>I Made This</title>
+        <meta name="description" content="All the stuff we've made" />
       </Helmet>
       <div>
         <Section>
@@ -53,6 +33,11 @@ export function HomePage({
         </Section>
         <Section>
           <H2>Hello, {currentUser.username}!</H2>
+        </Section>
+        <Section>
+          <StyledButton onClick={doLogoutUser}>
+            <FormattedMessage {...messages.logoutButtonLabel} />
+          </StyledButton>
         </Section>
       </div>
     </article>
@@ -66,7 +51,7 @@ HomePage.propTypes = {
     username: PropTypes.string,
     uniqueId: PropTypes.string,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  doLogoutUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -77,7 +62,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    doLogoutUser: () => dispatch(logoutUser()),
   };
 }
 
