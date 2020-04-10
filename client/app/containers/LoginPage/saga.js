@@ -1,9 +1,12 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+
 import request from 'utils/request';
 import { API_LOGIN, LOCAL_TOKEN_NAME } from 'containers/App/constants';
+import { userLoggedIn } from 'containers/App/actions';
+
 import { REQUEST_LOGIN } from './constants';
 import { makeSelectUsername, makeSelectPassword } from './selectors';
-import { loginSuccess, loginFailure } from './actions';
+import { loginFailure } from './actions';
 
 /**
  * Send authentication request
@@ -18,14 +21,15 @@ export function* submitLogin() {
   };
 
   try {
-    const { access_token: accessToken } = yield call(
+    const response = yield call(
       request,
       API_LOGIN,
       options,
     );
 
-    yield put(loginSuccess(accessToken));
-    localStorage.setItem(LOCAL_TOKEN_NAME, accessToken);
+    localStorage.setItem(LOCAL_TOKEN_NAME, response.accessToken);
+    // TODO: clear login form state
+    yield put(userLoggedIn(response.accessToken));
   } catch (error) {
     yield put(loginFailure());
     localStorage.removeItem(LOCAL_TOKEN_NAME);

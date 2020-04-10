@@ -9,7 +9,6 @@ import {
   USERNAME_CHANGED,
   REQUEST_LOGIN,
   LOGIN_FAILURE,
-  LOGIN_SUCCESS,
 } from './constants';
 
 export const initialState = {
@@ -37,10 +36,6 @@ const loginPageReducer = (state = initialState, action) =>
         break;
       case LOGIN_FAILURE:
         draft.loginError = true;
-        draft.loading = false;
-        break;
-      case LOGIN_SUCCESS:
-        draft.loginError = false;
         draft.loading = false;
         break;
     }

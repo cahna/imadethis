@@ -1,5 +1,13 @@
 import produce from 'immer';
-import { REQUEST_LOGOUT, LOGOUT_FINISHED, LOCAL_TOKEN_NAME } from './constants';
+import {
+  LOCAL_TOKEN_NAME,
+  REQUEST_LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  USER_LOGGED_IN,
+  LOADING_ACTIVE_USER,
+  ACTIVE_USER_LOADED,
+} from './constants';
 
 // The initial state of the App
 export const initialState = {
@@ -20,10 +28,31 @@ const appReducer = (state = initialState, { type, payload }) =>
         draft.loading = true;
         draft.error = false;
         break;
-      case LOGOUT_FINISHED:
+      case LOGOUT_SUCCESS:
         draft.loading = false;
-        draft.error = !payload.success;
+        draft.error = false;
         draft.accessToken = null;
+        break;
+      case LOGOUT_FAILED:
+        draft.loading = false;
+        draft.error = true;
+        draft.accessToken = null;
+        break;
+      case USER_LOGGED_IN:
+        draft.loading = false;
+        draft.error = false;
+        draft.accessToken = payload.accessToken;
+        break;
+      case LOADING_ACTIVE_USER:
+        draft.loading = true;
+        break;
+      case ACTIVE_USER_LOADED:
+        draft.loading = false;
+        draft.error = payload.error;
+
+        if (payload.user) {
+          draft.user = payload.user;
+        }
         break;
     }
   });

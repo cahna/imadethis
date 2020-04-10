@@ -10,14 +10,24 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import RegisterPage from 'containers/RegisterPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
+import reducer from './reducer';
+import saga from './saga';
+
+const key = 'global'
 
 export default function App() {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
   return (
     <div>
       <Switch>

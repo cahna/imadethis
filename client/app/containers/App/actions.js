@@ -15,11 +15,29 @@
  *    }
  */
 
-import { LOGOUT_FINISHED } from './constants';
+import {
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  USER_LOGGED_IN,
+  GET_ACTIVE_USER,
+  ACTIVE_USER_LOADED,
+  LOADING_ACTIVE_USER,
+} from './constants';
 
-export function logoutUserFinished(success) {
-  return {
-    type: LOGOUT_FINISHED,
-    payload: { success },
-  };
-}
+export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
+
+export const logoutFailed = () => ({ type: LOGOUT_FAILED });
+
+export const getActiveUser = () => ({ type: GET_ACTIVE_USER });
+
+export const loadingActiveUser = () => ({ type: LOADING_ACTIVE_USER });
+
+export const userLoggedIn = accessToken => ({
+  type: USER_LOGGED_IN,
+  payload: { accessToken },
+});
+
+export const activeUserLoaded = (user, error = false) => ({
+  type: ACTIVE_USER_LOADED,
+  payload: { user, error },
+});

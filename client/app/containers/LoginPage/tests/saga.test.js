@@ -1,9 +1,12 @@
 import { takeLatest } from 'redux-saga/effects';
 import { testSaga } from 'redux-saga-test-plan';
+
 import request from 'utils/request';
 import { API_LOGIN } from 'containers/App/constants';
+import { userLoggedIn } from 'containers/App/actions';
+
 import { REQUEST_LOGIN } from '../constants';
-import { loginSuccess, loginFailure } from '../actions';
+import { loginFailure } from '../actions';
 import loginPageSaga, { submitLogin } from '../saga';
 
 const username = 'TestUser';
@@ -36,7 +39,7 @@ describe('submitLogin saga generator', () => {
       .next(password)
       .call(request, API_LOGIN, options)
       .next({ access_token: accessToken })
-      .put(loginSuccess(accessToken))
+      .put(userLoggedIn(accessToken))
       .next()
       .isDone();
   });
