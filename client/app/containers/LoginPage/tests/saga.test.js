@@ -15,7 +15,10 @@ const accessToken = '_JWT_';
 const options = {
   body: JSON.stringify({ username, password }),
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 };
 
 /* eslint-disable redux-saga/yield-effects */
@@ -38,7 +41,7 @@ describe('submitLogin saga generator', () => {
       .next(username)
       .next(password)
       .call(request, API_LOGIN, options)
-      .next({ access_token: accessToken })
+      .next({ accessToken })
       .put(userLoggedIn(accessToken))
       .next()
       .isDone();

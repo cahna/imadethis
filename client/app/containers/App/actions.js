@@ -37,7 +37,7 @@ export const userLoggedIn = accessToken => ({
   payload: { accessToken },
 });
 
-export const activeUserLoaded = (user, error = false) => ({
+export const activeUserLoaded = (currentUser, error = false) => ({
   type: ACTIVE_USER_LOADED,
-  payload: { user, error },
+  payload: { currentUser, error },
 });

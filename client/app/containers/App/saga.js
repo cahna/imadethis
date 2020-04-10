@@ -63,8 +63,8 @@ export function* loadActiveUser() {
   };
 
   try {
-    const data = yield call(request, API_ACTIVE_USER, options);
-    yield put(activeUserLoaded(data));
+    const activeUser = yield call(request, API_ACTIVE_USER, options);
+    yield put(activeUserLoaded(activeUser));
     yield put(push('/'));
   } catch (err) {
     yield put(activeUserLoaded(null, true));

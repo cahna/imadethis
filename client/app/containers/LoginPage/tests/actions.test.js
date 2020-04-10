@@ -4,6 +4,7 @@ import {
   REQUEST_LOGIN,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  RESET_LOGIN_PAGE,
 } from '../constants';
 import {
   changeUsername,
@@ -11,6 +12,7 @@ import {
   submitLogin,
   loginSuccess,
   loginFailure,
+  resetLoginPage,
 } from '../actions';
 
 describe('LoginPage actions', () => {
@@ -59,6 +61,15 @@ describe('LoginPage actions', () => {
         type: LOGIN_FAILURE,
       };
       expect(loginFailure()).toEqual(expected);
+    });
+  });
+
+  describe('resetLoginPage Action', () => {
+    it('has a type of RESET_LOGIN_PAGE', () => {
+      const expected = {
+        type: RESET_LOGIN_PAGE,
+      };
+      expect(resetLoginPage()).toEqual(expected);
     });
   });
 });

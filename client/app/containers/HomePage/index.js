@@ -14,37 +14,30 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import { useInjectReducer } from 'utils/injectReducer';
+// import { useInjectReducer } from 'utils/injectReducer';
 // import { useInjectSaga } from 'utils/injectSaga';
 import H2 from 'components/H2';
 import {
-  makeSelectAccessToken,
+  makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
-import Section from './Section';
 
-import { makeSelectUsername } from './selectors';
+import Section from './Section';
 import messages from './messages';
-import reducer from './reducer';
+// import reducer from './reducer';
 // import saga from './saga';
 
-const key = 'home';
+// const key = 'home';
 
 export function HomePage({
-  // accessToken,
-  username,
+  currentUser,
   // loading,
   // error,
   // dispatch,
 }) {
-  useInjectReducer({ key, reducer });
+  // useInjectReducer({ key, reducer });
   // useInjectSaga({ key, saga });
-
-  // if (!accessToken) {
-  //   dispatch(push('/login'));
-  //   return <div>Redirecting...</div>;
-  // }
 
   return (
     <article>
@@ -59,7 +52,7 @@ export function HomePage({
           </h1>
         </Section>
         <Section>
-          <H2>Hello, {username}!</H2>
+          <H2>Hello, {currentUser.username}!</H2>
         </Section>
       </div>
     </article>
@@ -69,16 +62,17 @@ export function HomePage({
 HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  username: PropTypes.string,
-  accessToken: PropTypes.string,
+  currentUser: PropTypes.shape({
+    username: PropTypes.string,
+    uniqueId: PropTypes.string,
+  }).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  username: makeSelectUsername(),
+  currentUser: makeSelectCurrentUser(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
-  accessToken: makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {

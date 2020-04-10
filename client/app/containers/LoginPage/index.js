@@ -1,10 +1,4 @@
-/**
- *
- * LoginPage
- *
- */
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -23,7 +17,12 @@ import { makeSelectUsername, makeSelectPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { submitLogin, changeUsername, changePassword } from './actions';
+import {
+  submitLogin,
+  changeUsername,
+  changePassword,
+  resetLoginPage,
+} from './actions';
 
 const key = 'loginPage';
 
@@ -33,9 +32,16 @@ export function LoginPage({
   onChangeUsername,
   onChangePassword,
   onSubmitForm,
+  clearForm,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+  useEffect(
+    () => () => {
+      clearForm();
+    },
+    [],
+  );
 
   return (
     <div>
@@ -89,6 +95,7 @@ LoginPage.propTypes = {
   onChangeUsername: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
+  clearForm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -104,6 +111,7 @@ function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(submitLogin());
     },
+    clearForm: () => dispatch(resetLoginPage()),
   };
 }
 

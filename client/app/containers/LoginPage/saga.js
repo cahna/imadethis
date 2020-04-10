@@ -24,14 +24,9 @@ export function* submitLogin() {
   };
 
   try {
-    const response = yield call(
-      request,
-      API_LOGIN,
-      options,
-    );
+    const response = yield call(request, API_LOGIN, options);
 
     localStorage.setItem(LOCAL_TOKEN_NAME, response.accessToken);
-    // TODO: clear login form state
     yield put(userLoggedIn(response.accessToken));
   } catch (error) {
     yield put(loginFailure());

@@ -50,8 +50,8 @@ const appReducer = (state = initialState, { type, payload }) =>
         draft.loading = false;
         draft.error = payload.error;
 
-        if (payload.user) {
-          draft.user = payload.user;
+        if (payload.currentUser) {
+          draft.currentUser = payload.currentUser;
         }
         break;
     }

@@ -6,6 +6,7 @@ import {
   submitLogin,
   loginSuccess,
   loginFailure,
+  resetLoginPage,
 } from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
@@ -106,6 +107,19 @@ describe('loginPageReducer', () => {
       produce(state, draft => {
         draft.loginError = false;
         draft.loading = true;
+      }),
+    );
+  });
+
+  it('should handle resetLoginPage correctly', () => {
+    expect(loginPageReducer(state, resetLoginPage())).toEqual(
+      produce(state, draft => {
+        draft.username = '';
+        draft.password = '';
+        draft.usernameError = false;
+        draft.passwordError = false;
+        draft.loginError = false;
+        draft.loading = false;
       }),
     );
   });

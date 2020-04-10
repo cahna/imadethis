@@ -19,7 +19,6 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
         class="H2-egphza-0 HsCXl"
       >
         Hello, 
-        
         !
       </h2>
     </section>

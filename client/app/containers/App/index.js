@@ -22,7 +22,7 @@ import GlobalStyle from '../../global-styles';
 import reducer from './reducer';
 import saga from './saga';
 
-const key = 'global'
+const key = 'global';
 
 export default function App() {
   useInjectReducer({ key, reducer });
