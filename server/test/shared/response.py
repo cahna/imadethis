@@ -29,11 +29,13 @@ def verify_user_response(response: Response,
     user_data = verify_api_response(response)
 
     assert 'username' in user_data
-    assert 'unique_id' in user_data
+    assert 'uniqueId' in user_data
+    assert 'unique_id' not in user_data
     assert 'password' not in user_data
     assert 'hashed_pw' not in user_data
+    assert 'hashedPw' not in user_data
 
-    response_unique_id = user_data['unique_id']
+    response_unique_id = user_data['uniqueId']
     id_len = len(response_unique_id)
 
     assert id_len == UUID_LENGTH, \

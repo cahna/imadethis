@@ -54,7 +54,7 @@ def verify_get_active_user(client: FlaskClient,
                            username: str = None) -> Mapping:
     assert access_token
 
-    response = client.get(f'/users/active_user',
+    response = client.get(f'/auth/active_user',
                           headers=auth_header(access_token),
                           follow_redirects=False)
 

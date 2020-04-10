@@ -59,8 +59,8 @@ class User(db.Model):
     def dto(self):
         return {
             'username': self.username,
-            'unique_id': self.unique_id,
-            'date_created': self.date_created,
+            'uniqueId': self.unique_id,
+            'dateCreated': self.date_created,
             'builds': [b.unique_id for b in self.builds],
         }
 
