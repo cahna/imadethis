@@ -25,19 +25,31 @@ describe('<RegisterPage />', () => {
 
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    const dispatch = jest.fn();
+    const onChangeUsername = jest.fn();
+    const onChangePassword = jest.fn();
+    const onChangeConfirmPassword = jest.fn();
+    const onSubmitForm = jest.fn();
+    const clearForm = jest.fn();
     render(
       <Provider store={store}>
         <IntlProvider locale={DEFAULT_LOCALE}>
-          <RegisterPage dispatch={dispatch} />
+          <RegisterPage
+            username=""
+            password=""
+            confirmPassword=""
+            usernameError={false}
+            passwordError={false}
+            confirmPasswordError={false}
+            onChangeUsername={onChangeUsername}
+            onChangePassword={onChangePassword}
+            onChangeConfirmPassword={onChangeConfirmPassword}
+            onSubmitForm={onSubmitForm}
+            clearForm={clearForm}
+          />
         </IntlProvider>
       </Provider>,
     );
     expect(spy).not.toHaveBeenCalled();
-  });
-
-  it('Expect to have additional unit tests specified', () => {
-    expect(true).toEqual(true);
   });
 
   /**
