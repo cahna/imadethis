@@ -1,25 +1,58 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-/**
- * Direct selector to the registerPage state domain
- */
+const selectRegisterPageState = state => state.registerPage || initialState;
 
-const selectRegisterPageDomain = state => state.registerPage || initialState;
-
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by RegisterPage
- */
-
-const makeSelectRegisterPage = () =>
+export const makeSelectRegisterPage = () =>
   createSelector(
-    selectRegisterPageDomain,
+    selectRegisterPageState,
     substate => substate,
   );
 
-export default makeSelectRegisterPage;
-export { selectRegisterPageDomain };
+export const makeSelectUsername = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.username,
+  );
+
+export const makeSelectPassword = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.password,
+  );
+
+export const makeSelectConfirmPassword = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.confirmPassword,
+  );
+
+export const makeSelectLoading = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.loading,
+  );
+
+export const makeSelectRegisterError = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.registerError,
+  );
+
+export const makeSelectUsernameError = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.usernameError,
+  );
+
+export const makeSelectPasswordError = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.passwordError,
+  );
+
+export const makeSelectConfirmPasswordError = () =>
+  createSelector(
+    selectRegisterPageState,
+    registerPageState => registerPageState.confirmPasswordError,
+  );

@@ -15,6 +15,20 @@
       "jinja": true
     },
     {
+      "name": "Python: Flask (postgresql)",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "imadethis_api",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "0",
+        "IMADETHIS_DB_URI": "postgresql://imadethis:imadethis@localhost:5432/imadethis"
+      },
+      "args": ["run", "--no-debugger", "--no-reload"],
+      "jinja": true
+    },
+    {
       "name": "Debug Jest",
       "type": "node",
       "request": "launch",
