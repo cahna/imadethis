@@ -5,7 +5,7 @@ export const scope = 'boilerplate.containers.HomePage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Welcome to Enterprise-Standard Chat!',
+    defaultMessage: 'What have you made?',
   },
   logoutButtonLabel: {
     id: `${scope}.logoutButtonLabel.message`,

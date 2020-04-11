@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { push } from 'connected-react-router';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -12,7 +13,7 @@ import H2 from 'components/H2';
 import CenteredSection from 'components/CenteredSection';
 import Form from 'components/Form';
 import Input from 'components/Input';
-import StyledButton from 'components/Button';
+import Button from 'components/Button';
 import { makeSelectUsername, makeSelectPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -32,6 +33,7 @@ export function LoginPage({
   onChangeUsername,
   onChangePassword,
   onSubmitForm,
+  goToRegisterPage,
   clearForm,
 }) {
   useInjectReducer({ key, reducer });
@@ -79,10 +81,13 @@ export function LoginPage({
                 />
               </label>
             </div>
-            <StyledButton onClick={onSubmitForm}>
+            <Button type="submit" onClick={onSubmitForm}>
               <FormattedMessage {...messages.loginButtonLabel} />
-            </StyledButton>
+            </Button>
           </Form>
+          <Button onClick={goToRegisterPage}>
+            <FormattedMessage {...messages.registerButtonLabel} />
+          </Button>
         </CenteredSection>
       </div>
     </div>
@@ -95,6 +100,7 @@ LoginPage.propTypes = {
   onChangeUsername: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
+  goToRegisterPage: PropTypes.func.isRequired,
   clearForm: PropTypes.func.isRequired,
 };
 
@@ -112,6 +118,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(submitLogin());
     },
     clearForm: () => dispatch(resetLoginPage()),
+    goToRegisterPage: () => dispatch(push('/register')),
   };
 }
 

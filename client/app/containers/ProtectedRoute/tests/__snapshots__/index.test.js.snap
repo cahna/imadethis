@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<ProtectedRoute /> with valid user and accessToken renders private route with valid user+token 1`] = `
-<div>
-  Private route
-</div>
-`;

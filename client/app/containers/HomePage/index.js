@@ -7,7 +7,8 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import H2 from 'components/H2';
-import StyledButton from 'components/Button';
+import Button from 'components/Button';
+import CenteredSection from 'components/CenteredSection';
 import {
   makeSelectCurrentUser,
   makeSelectLoading,
@@ -15,7 +16,6 @@ import {
 } from 'containers/App/selectors';
 import { logoutUser } from 'containers/App/actions';
 
-import Section from './Section';
 import messages from './messages';
 
 export function HomePage({ currentUser, doLogoutUser }) {
@@ -26,19 +26,19 @@ export function HomePage({ currentUser, doLogoutUser }) {
         <meta name="description" content="All the stuff we've made" />
       </Helmet>
       <div>
-        <Section>
+        <CenteredSection>
           <h1>
             <FormattedMessage {...messages.header} />
           </h1>
-        </Section>
-        <Section>
+        </CenteredSection>
+        <CenteredSection>
           <H2>Hello, {currentUser.username}!</H2>
-        </Section>
-        <Section>
-          <StyledButton onClick={doLogoutUser}>
+        </CenteredSection>
+        <CenteredSection>
+          <Button onClick={doLogoutUser}>
             <FormattedMessage {...messages.logoutButtonLabel} />
-          </StyledButton>
-        </Section>
+          </Button>
+        </CenteredSection>
       </div>
     </article>
   );

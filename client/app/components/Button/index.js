@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import A from './A';
 import StyledButton from './StyledButton';
+import StyledInputButton from './StyledInputButton';
 import Wrapper from './Wrapper';
 
 function Button(props) {
@@ -28,6 +29,8 @@ function Button(props) {
         {Children.toArray(props.children)}
       </StyledButton>
     );
+  } else if (props.type && props.type === 'submit') {
+    button = <StyledInputButton type="submit" onClick={props.onClick} />;
   }
 
   return <Wrapper>{button}</Wrapper>;
@@ -38,6 +41,7 @@ Button.propTypes = {
   href: PropTypes.string,
   onClick: PropTypes.func,
   children: PropTypes.node.isRequired,
+  type: PropTypes.string,
 };
 
 export default Button;

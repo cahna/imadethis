@@ -11,7 +11,7 @@ export const scope = 'app.containers.LoginPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the LoginPage container!',
+    defaultMessage: 'Login',
   },
   usernameLabel: {
     id: `${scope}.usernameLabel`,
@@ -24,5 +24,9 @@ export default defineMessages({
   loginButtonLabel: {
     id: `${scope}.loginButtonLabel`,
     defaultMessage: 'Login',
+  },
+  registerButtonLabel: {
+    id: `${scope}.registerButtonLabel`,
+    defaultMessage: 'Register',
   },
 });

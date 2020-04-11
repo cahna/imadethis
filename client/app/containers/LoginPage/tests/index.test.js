@@ -22,6 +22,7 @@ describe('<LoginPage />', () => {
     const onChangePassword = jest.fn();
     const onSubmitForm = jest.fn();
     const clearForm = jest.fn();
+    const goToRegisterPage = jest.fn();
 
     render(
       <Provider store={store}>
@@ -33,6 +34,7 @@ describe('<LoginPage />', () => {
             onChangePassword={onChangePassword}
             onSubmitForm={onSubmitForm}
             clearForm={clearForm}
+            goToRegisterPage={goToRegisterPage}
           />
         </IntlProvider>
       </Provider>,
@@ -48,6 +50,7 @@ describe('<LoginPage />', () => {
     const onChangePassword = jest.fn();
     const onSubmitForm = jest.fn();
     const clearForm = jest.fn();
+    const goToRegisterPage = jest.fn();
 
     const {
       container: { firstChild },
@@ -61,6 +64,7 @@ describe('<LoginPage />', () => {
             onChangePassword={onChangePassword}
             onSubmitForm={onSubmitForm}
             clearForm={clearForm}
+            goToRegisterPage={goToRegisterPage}
           />
         </IntlProvider>
       </Provider>,

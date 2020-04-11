@@ -13,11 +13,14 @@ import { Switch, Route } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import ProtectedRoute from 'containers/ProtectedRoute';
+// import ProtectedRoute from 'containers/ProtectedRoute';
+// import PublicOnlyRoute from 'containers/ProtectedRoute';
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import RegisterPage from 'containers/RegisterPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import withRequireSession from 'containers/withRequireSession';
+import withDisallowSession from 'containers/withDisallowSession';
 
 import GlobalStyle from '../../global-styles';
 import reducer from './reducer';
@@ -26,6 +29,10 @@ import { APP_KEY } from './constants';
 
 const key = APP_KEY;
 
+const ManagedHomePage = withRequireSession(HomePage);
+const ManagedLoginPage = withDisallowSession(LoginPage);
+const ManagedRegisterPage = withDisallowSession(RegisterPage);
+
 export default function App() {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -33,9 +40,9 @@ export default function App() {
   return (
     <div>
       <Switch>
-        <ProtectedRoute exact path="/" component={HomePage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/register" component={RegisterPage} />
+        <Route exact path="/" component={ManagedHomePage} />
+        <Route exact path="/login" component={ManagedLoginPage} />
+        <Route exact path="/register" component={ManagedRegisterPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
