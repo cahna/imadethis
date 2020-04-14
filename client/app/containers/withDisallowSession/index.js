@@ -15,8 +15,8 @@ import saga from 'containers/App/saga';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import messages from './messages';
 
-export const DisallowSessionHoC = Component => {
-  const WrappedComponent = props => {
+export const DisallowSessionHoC = (Component) => {
+  const WrappedComponent = (props) => {
     const { accessToken, redirectTo, ...rest } = props;
 
     useInjectSaga({ key: APP_KEY, saga });
@@ -57,16 +57,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    redirectTo: path => dispatch(push(path)),
+    redirectTo: (path) => dispatch(push(path)),
   };
 }
 
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(
-  withConnect,
-  DisallowSessionHoC,
-);
+export default compose(withConnect, DisallowSessionHoC);

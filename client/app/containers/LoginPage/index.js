@@ -111,9 +111,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    onChangePassword: evt => dispatch(changePassword(evt.target.value)),
-    onSubmitForm: evt => {
+    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    onChangePassword: (evt) => dispatch(changePassword(evt.target.value)),
+    onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(submitLogin());
     },
@@ -122,9 +122,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(LoginPage);

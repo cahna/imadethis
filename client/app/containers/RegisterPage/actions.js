@@ -8,17 +8,17 @@ import {
   RESET_REGISTER_PAGE,
 } from './constants';
 
-export const changeUsername = username => ({
+export const changeUsername = (username) => ({
   type: USERNAME_CHANGED,
   payload: { username },
 });
 
-export const changePassword = password => ({
+export const changePassword = (password) => ({
   type: PASSWORD_CHANGED,
   payload: { password },
 });
 
-export const changeConfirmPassword = confirmPassword => ({
+export const changeConfirmPassword = (confirmPassword) => ({
   type: CONFIRM_PASSWORD_CHANGED,
   payload: { confirmPassword },
 });

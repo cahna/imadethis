@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router-dom';
-// import 'jest-dom/extend-expect'; // add some helpful assertions
+// import '@testing-library/jest-dom/extend-expect'; // add some helpful assertions
 
 import { LoginPage } from '../index';
 import { DEFAULT_LOCALE } from '../../../i18n';

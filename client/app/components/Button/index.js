@@ -14,6 +14,7 @@ import StyledButton from './StyledButton';
 import StyledInputButton from './StyledInputButton';
 import Wrapper from './Wrapper';
 
+/* eslint-disable react/jsx-props-no-spreading */
 function Button(props) {
   const { href, children, onClick, handleRoute, ...rest } = props;
 

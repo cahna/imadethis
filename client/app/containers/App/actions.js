@@ -35,7 +35,7 @@ export const getActiveUser = () => ({ type: GET_ACTIVE_USER });
 
 export const loadingActiveUser = () => ({ type: LOADING_ACTIVE_USER });
 
-export const userLoggedIn = accessToken => ({
+export const userLoggedIn = (accessToken) => ({
   type: USER_LOGGED_IN,
   payload: { accessToken },
 });

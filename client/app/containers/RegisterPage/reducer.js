@@ -21,7 +21,7 @@ export const initialState = {
 
 /* eslint-disable default-case, no-param-reassign */
 const registerPageReducer = (state = initialState, { type, payload }) =>
-  produce(state, draft => {
+  produce(state, (draft) => {
     switch (type) {
       case USERNAME_CHANGED:
         draft.username = payload.username || '';

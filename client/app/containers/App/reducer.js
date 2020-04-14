@@ -22,7 +22,7 @@ export const initialState = {
 
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, { type, payload }) =>
-  produce(state, draft => {
+  produce(state, (draft) => {
     switch (type) {
       case REQUEST_LOGOUT:
         draft.loading = true;

@@ -3,12 +3,14 @@
  */
 
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 
 import A from '../index';
 
 const href = 'http://mxstbr.com/';
 const children = <h1>Test</h1>;
+
+/* eslint-disable react/jsx-props-no-spreading */
 const renderComponent = (props = {}) =>
   render(
     <A href={href} {...props}>

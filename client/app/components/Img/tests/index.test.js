@@ -1,10 +1,12 @@
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 
 import Img from '../index';
 
 const src = 'test.png';
 const alt = 'test';
+
+/* eslint-disable react/jsx-props-no-spreading */
 const renderComponent = (props = {}) =>
   render(<Img src={src} alt={alt} {...props} />);
 
