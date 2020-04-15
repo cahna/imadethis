@@ -4,9 +4,10 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { push } from 'connected-react-router';
+import { Helmet } from 'react-helmet-async';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { EuiPage, EuiPageBody, EuiPageContent } from '@elastic/eui';
 
-import CenteredSection from 'components/CenteredSection';
-import { FormattedMessage } from 'react-intl';
 import { useInjectSaga } from 'utils/injectSaga';
 import { getDisplayName } from 'utils/hoc';
 import {
@@ -30,7 +31,6 @@ export const RequireSessionHoC = (Component) => {
     } = props;
 
     useInjectSaga({ key: APP_KEY, saga });
-
     useEffect(() => {
       if (!accessToken) {
         redirectTo('/login');
@@ -39,13 +39,25 @@ export const RequireSessionHoC = (Component) => {
       }
     });
 
+    const { formatMessage } = useIntl();
+    const redirecting = formatMessage(messages.unauthorizedRedirect);
+
     if (!accessToken || !currentUser || !currentUser.username) {
       return (
-        <div>
-          <CenteredSection>
-            <FormattedMessage {...messages.unauthorizedRedirect} />
-          </CenteredSection>
-        </div>
+        <EuiPage>
+          <Helmet>
+            <title>{redirecting}</title>
+            <meta name="description" content={redirecting} />
+          </Helmet>
+          <EuiPageBody component="div">
+            <EuiPageContent
+              verticalPosition="center"
+              horizontalPosition="center"
+            >
+              <FormattedMessage {...messages.unauthorizedRedirect} />
+            </EuiPageContent>
+          </EuiPageBody>
+        </EuiPage>
       );
     }
 

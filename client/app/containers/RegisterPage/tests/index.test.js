@@ -28,6 +28,7 @@ describe('<RegisterPage />', () => {
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
             <RegisterPage
+              loading={false}
               username=""
               password=""
               confirmPassword=""
@@ -61,6 +62,7 @@ describe('<RegisterPage />', () => {
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
             <RegisterPage
+              loading={false}
               username=""
               password=""
               confirmPassword=""

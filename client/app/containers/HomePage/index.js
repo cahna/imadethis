@@ -1,14 +1,27 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import {
+  EuiPage,
+  EuiPageBody,
+  EuiPageHeader,
+  EuiHeaderLogo,
+  EuiFieldSearch,
+  EuiHeader,
+  EuiSideNav,
+  EuiPageHeaderSection,
+  EuiPageContent,
+  EuiPageContentBody,
+  EuiPageContentHeader,
+  EuiPageContentHeaderSection,
+  EuiTitle,
+  EuiIcon,
+} from '@elastic/eui';
 
-import H2 from 'components/H2';
-import Button from 'components/Button';
-import CenteredSection from 'components/CenteredSection';
 import {
   makeSelectCurrentUser,
   makeSelectLoading,
@@ -19,28 +32,78 @@ import { logoutUser } from 'containers/App/actions';
 import messages from './messages';
 
 export function HomePage({ currentUser, doLogoutUser }) {
+  const { formatMessage } = useIntl();
+
+  const renderLogo = (
+    <EuiHeaderLogo iconType="compute" href="/" aria-label="Go to home page" />
+  );
+
+  const breadcrumbs = [
+    {
+      text: 'Home',
+      href: '/',
+    },
+  ];
+
+  const renderSearch = <EuiFieldSearch placeholder="Search" compressed />;
+
+  const sections = [
+    {
+      items: [renderLogo],
+      borders: 'right',
+      breadcrumbs,
+    },
+    {
+      items: [renderSearch, <div style={{ width: 8 }} />],
+      borders: 'none',
+    },
+  ];
+
   return (
-    <article>
+    <EuiPage>
       <Helmet>
         <title>I Made This</title>
         <meta name="description" content="All the stuff we've made" />
       </Helmet>
-      <div>
-        <CenteredSection>
-          <h1>
-            <FormattedMessage {...messages.header} />
-          </h1>
-        </CenteredSection>
-        <CenteredSection>
-          <H2>Hello, {currentUser.username}!</H2>
-        </CenteredSection>
-        <CenteredSection>
-          <Button onClick={doLogoutUser}>
-            <FormattedMessage {...messages.logoutButtonLabel} />
-          </Button>
-        </CenteredSection>
-      </div>
-    </article>
+      <EuiHeader sections={sections} position="fixed" />
+      <EuiSideNav
+        style={{ width: 192 }}
+        items={[
+          {
+            name: currentUser.username,
+            id: currentUser.username,
+            icon: <EuiIcon type="user" />,
+            items: [
+              {
+                name: formatMessage(messages.logoutButtonLabel),
+                id: 'Logout',
+                onClick: doLogoutUser,
+              },
+            ],
+          },
+        ]}
+      />
+      <EuiPageBody component="div">
+        <EuiPageHeader>
+          <EuiPageHeaderSection>
+            <EuiTitle size="l">
+              <FormattedMessage {...messages.header} />
+            </EuiTitle>
+          </EuiPageHeaderSection>
+          <EuiPageHeaderSection>Page abilities</EuiPageHeaderSection>
+        </EuiPageHeader>
+        <EuiPageContent>
+          <EuiPageContentHeader>
+            <EuiPageContentHeaderSection>
+              <EuiTitle>
+                <h2>Hello, {currentUser.username}!</h2>
+              </EuiTitle>
+            </EuiPageContentHeaderSection>
+          </EuiPageContentHeader>
+          <EuiPageContentBody>TODO</EuiPageContentBody>
+        </EuiPageContent>
+      </EuiPageBody>
+    </EuiPage>
   );
 }
 
