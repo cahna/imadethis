@@ -6,7 +6,7 @@ import { memoryHistory } from 'react-router-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 
 import configureStore from '../../configureStore';
 import injectReducer, { useInjectReducer } from '../injectReducer';
@@ -15,7 +15,7 @@ import * as reducerInjectors from '../reducerInjectors';
 // Fixtures
 const Component = () => null;
 
-const reducer = s => s;
+const reducer = (s) => s;
 
 describe('injectReducer decorator', () => {
   let store;
@@ -47,10 +47,12 @@ describe('injectReducer decorator', () => {
   });
 
   it('should set a correct display name', () => {
-    expect(ComponentWithReducer.displayName).toBe('withReducer(Component)');
+    expect(ComponentWithReducer.displayName).toBe(
+      'withReducer(ReducerInjector)',
+    );
     expect(
       injectReducer({ key: 'test', reducer })(() => null).displayName,
-    ).toBe('withReducer(Component)');
+    ).toBe('withReducer(ReducerInjector)');
   });
 
   it('should propagate props', () => {
@@ -62,7 +64,7 @@ describe('injectReducer decorator', () => {
     );
     const {
       props: { children },
-    } = renderedComponent.getInstance();
+    } = renderedComponent.root;
 
     expect(children.props).toEqual(props);
   });

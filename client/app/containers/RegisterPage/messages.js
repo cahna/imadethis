@@ -11,6 +11,22 @@ export const scope = 'app.containers.RegisterPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the RegisterPage container!',
+    defaultMessage: 'Register a new account:',
+  },
+  registerButtonLabel: {
+    id: `${scope}.registerButtonLabel`,
+    defaultMessage: 'Register',
+  },
+  usernameLabel: {
+    id: `${scope}.usernameLabel`,
+    defaultMessage: 'Username',
+  },
+  passwordLabel: {
+    id: `${scope}.passwordLabel`,
+    defaultMessage: 'Password',
+  },
+  confirmPasswordLabel: {
+    id: `${scope}.confirmPasswordLabel`,
+    defaultMessage: 'Confirm password',
   },
 });

@@ -14,23 +14,26 @@ import StyledButton from './StyledButton';
 import StyledInputButton from './StyledInputButton';
 import Wrapper from './Wrapper';
 
+/* eslint-disable react/jsx-props-no-spreading */
 function Button(props) {
+  const { href, children, onClick, handleRoute, ...rest } = props;
+
   // Render an anchor tag
   let button = (
-    <A href={props.href} onClick={props.onClick}>
-      {Children.toArray(props.children)}
+    <A href={href} onClick={onClick}>
+      {Children.toArray(children)}
     </A>
   );
 
   // If the Button has a handleRoute prop, we want to render a button
-  if (props.handleRoute) {
+  if (handleRoute) {
     button = (
-      <StyledButton onClick={props.handleRoute}>
-        {Children.toArray(props.children)}
+      <StyledButton onClick={handleRoute}>
+        {Children.toArray(children)}
       </StyledButton>
     );
   } else if (props.type && props.type === 'submit') {
-    button = <StyledInputButton type="submit" onClick={props.onClick} />;
+    button = <StyledInputButton type="submit" onClick={onClick} {...rest} />;
   }
 
   return <Wrapper>{button}</Wrapper>;

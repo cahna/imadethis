@@ -4,27 +4,23 @@ exports[`<LoginPage /> Should render and match the snapshot 1`] = `
 <div>
   <div>
     <section
-      class="Section-ojdkzv-0 CenteredSection-sc-1e2by6n-0 jhRZyk"
+      class="Section-ojdkzv-0 CenteredSection-sc-1e2by6n-0 fuuAJb"
     >
       <h2
-        class="H2-egphza-0 HsCXl"
+        class="H2-egphza-0 fehwqM"
       >
-        <span>
-          Login
-        </span>
+        Login
       </h2>
       <form
-        class="Form-kd3r69-0 kUCzDC"
+        class="Form-kd3r69-0 fickPI"
       >
         <div>
           <label
             for="username"
           >
-            <span>
-              Username
-            </span>
+            Username
             <input
-              class="Input-sc-19txxuq-0 iygDGi"
+              class="Input-sc-19txxuq-0 bqjmLb"
               id="username"
               placeholder=""
               type="text"
@@ -36,11 +32,9 @@ exports[`<LoginPage /> Should render and match the snapshot 1`] = `
           <label
             for="password"
           >
-            <span>
-              Password
-            </span>
+            Password
             <input
-              class="Input-sc-19txxuq-0 iygDGi"
+              class="Input-sc-19txxuq-0 bqjmLb"
               id="password"
               placeholder=""
               type="password"
@@ -49,23 +43,21 @@ exports[`<LoginPage /> Should render and match the snapshot 1`] = `
           </label>
         </div>
         <div
-          class="Wrapper-sc-5dsnpv-0 jpYyqh"
+          class="Wrapper-sc-5dsnpv-0 bCngtA"
         >
           <input
-            class="StyledInputButton-sc-114mby9-0 epGiHD"
+            class="StyledInputButton-sc-114mby9-0 krjkFi"
             type="submit"
           />
         </div>
       </form>
       <div
-        class="Wrapper-sc-5dsnpv-0 jpYyqh"
+        class="Wrapper-sc-5dsnpv-0 bCngtA"
       >
         <a
-          class="A-t53uvo-0 imPlZY"
+          class="A-t53uvo-0 kzOpmE"
         >
-          <span>
-            Register
-          </span>
+          Register
         </a>
       </div>
     </section>

@@ -14,7 +14,15 @@ export const ACTIVE_USER_LOADED = 'imadethis/App/ACTIVE_USER_LOADED';
  */
 export const API_LOGIN = '/api/auth/login';
 export const API_LOGOUT = '/api/auth/logout';
+export const API_REGISTER = '/api/auth/register';
 export const API_ACTIVE_USER = '/api/auth/active_user';
+
+/**
+ * UI routes
+ */
+export const ROUTE_HOME = '/';
+export const ROUTE_LOGIN = '/login';
+export const ROUTE_REGISTER = '/register';
 
 /**
  * Configuration / other

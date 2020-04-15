@@ -5,7 +5,7 @@
 import { memoryHistory } from 'react-router-dom';
 import { put } from 'redux-saga/effects';
 import renderer from 'react-test-renderer';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 
@@ -73,10 +73,10 @@ describe('injectSaga decorator', () => {
   });
 
   it('should set a correct display name', () => {
-    expect(ComponentWithSaga.displayName).toBe('withSaga(Component)');
+    expect(ComponentWithSaga.displayName).toBe('withSaga(InjectSaga)');
     expect(
       injectSaga({ key: 'test', saga: testSaga })(() => null).displayName,
-    ).toBe('withSaga(Component)');
+    ).toBe('withSaga(InjectSaga)');
   });
 
   it('should propagate props', () => {
@@ -88,7 +88,7 @@ describe('injectSaga decorator', () => {
     );
     const {
       props: { children },
-    } = renderedComponent.getInstance();
+    } = renderedComponent.root;
     expect(children.props).toEqual(props);
   });
 });

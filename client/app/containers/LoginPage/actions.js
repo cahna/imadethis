@@ -7,19 +7,19 @@ import {
   RESET_LOGIN_PAGE,
 } from './constants';
 
-export const changeUsername = username => ({
+export const changeUsername = (username) => ({
   type: USERNAME_CHANGED,
   payload: { username },
 });
 
-export const changePassword = password => ({
+export const changePassword = (password) => ({
   type: PASSWORD_CHANGED,
   payload: { password },
 });
 
 export const submitLogin = () => ({ type: REQUEST_LOGIN });
 
-export const loginSuccess = accessToken => ({
+export const loginSuccess = (accessToken) => ({
   type: LOGIN_SUCCESS,
   payload: { accessToken },
 });

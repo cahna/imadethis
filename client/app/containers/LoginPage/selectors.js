@@ -1,30 +1,30 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectLoginPageState = state => state.loginPage || initialState;
+const selectLoginPageState = (state) => state.loginPage || initialState;
 
 const makeSelectUsername = () =>
   createSelector(
     selectLoginPageState,
-    loginPageState => loginPageState.username,
+    (loginPageState) => loginPageState.username,
   );
 
 const makeSelectPassword = () =>
   createSelector(
     selectLoginPageState,
-    loginPageState => loginPageState.password,
+    (loginPageState) => loginPageState.password,
   );
 
 const makeSelectLoading = () =>
   createSelector(
     selectLoginPageState,
-    loginPageState => loginPageState.loading,
+    (loginPageState) => loginPageState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
     selectLoginPageState,
-    loginPageState => loginPageState.error,
+    (loginPageState) => loginPageState.error,
   );
 
 export {
