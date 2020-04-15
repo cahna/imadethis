@@ -33,6 +33,7 @@ describe('<LoginPage />', () => {
             <LoginPage
               username=""
               password=""
+              loading={false}
               onChangeUsername={onChangeUsername}
               onChangePassword={onChangePassword}
               onSubmitForm={onSubmitForm}
@@ -66,6 +67,7 @@ describe('<LoginPage />', () => {
             <LoginPage
               username="TestUser"
               password="TestPassword"
+              loading={false}
               onChangeUsername={onChangeUsername}
               onChangePassword={onChangePassword}
               onSubmitForm={onSubmitForm}

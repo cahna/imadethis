@@ -2,19 +2,36 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { push } from 'connected-react-router';
+import {
+  EuiPage,
+  EuiPageBody,
+  EuiPageContent,
+  EuiPageContentBody,
+  EuiPageContentHeader,
+  EuiPageContentHeaderSection,
+  EuiTitle,
+  EuiFieldPassword,
+  EuiFieldText,
+  EuiForm,
+  EuiFormRow,
+  EuiButton,
+  EuiLink,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+} from '@elastic/eui';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import H2 from 'components/H2';
-import CenteredSection from 'components/CenteredSection';
-import Form from 'components/Form';
-import Input from 'components/Input';
-import Button from 'components/Button';
-import { makeSelectUsername, makeSelectPassword } from './selectors';
+import {
+  makeSelectUsername,
+  makeSelectPassword,
+  makeSelectLoading,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -30,6 +47,7 @@ const key = 'loginPage';
 export function LoginPage({
   username,
   password,
+  loading,
   onChangeUsername,
   onChangePassword,
   onSubmitForm,
@@ -45,58 +63,75 @@ export function LoginPage({
     [],
   );
 
+  const { formatMessage } = useIntl();
+
   return (
-    <div>
+    <EuiPage>
       <Helmet>
         <title>Login</title>
         <meta name="description" content="Login" />
       </Helmet>
-      <div>
-        <CenteredSection>
-          <H2>
-            <FormattedMessage {...messages.header} />
-          </H2>
-          <Form onSubmit={onSubmitForm}>
-            <div>
-              <label htmlFor="username">
-                <FormattedMessage {...messages.usernameLabel} />
-                <Input
-                  id="username"
-                  type="text"
+      <EuiPageBody component="div">
+        <EuiPageContent verticalPosition="center" horizontalPosition="center">
+          <EuiPageContentHeader>
+            <EuiPageContentHeaderSection>
+              <EuiTitle>
+                <h2>
+                  <FormattedMessage {...messages.header} />
+                </h2>
+              </EuiTitle>
+            </EuiPageContentHeaderSection>
+          </EuiPageContentHeader>
+          <EuiPageContentBody>
+            <EuiForm component="form" onSubmit={onSubmitForm}>
+              <EuiFormRow label={formatMessage(messages.usernameLabel)}>
+                <EuiFieldText
                   placeholder=""
                   value={username}
                   onChange={onChangeUsername}
                 />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="password">
-                <FormattedMessage {...messages.passwordLabel} />
-                <Input
-                  id="password"
-                  type="password"
+              </EuiFormRow>
+              <EuiFormRow label={formatMessage(messages.passwordLabel)}>
+                <EuiFieldPassword
                   placeholder=""
                   value={password}
                   onChange={onChangePassword}
                 />
-              </label>
-            </div>
-            <Button type="submit" onClick={onSubmitForm}>
-              <FormattedMessage {...messages.loginButtonLabel} />
-            </Button>
-          </Form>
-          <Button onClick={goToRegisterPage}>
-            <FormattedMessage {...messages.registerButtonLabel} />
-          </Button>
-        </CenteredSection>
-      </div>
-    </div>
+              </EuiFormRow>
+              <EuiFormRow>
+                <EuiFlexGroup justifyContent="spaceAround">
+                  <EuiFlexItem grow={false}>
+                    <EuiButton
+                      fill
+                      type="submit"
+                      onClick={onSubmitForm}
+                      isLoading={loading}
+                    >
+                      <FormattedMessage {...messages.loginButtonLabel} />
+                    </EuiButton>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFormRow>
+            </EuiForm>
+            <EuiSpacer />
+            <EuiFlexGroup justifyContent="spaceAround">
+              <EuiFlexItem grow={false}>
+                <EuiLink color="secondary" onClick={goToRegisterPage}>
+                  <FormattedMessage {...messages.registerButtonLabel} />
+                </EuiLink>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiPageContentBody>
+        </EuiPageContent>
+      </EuiPageBody>
+    </EuiPage>
   );
 }
 
 LoginPage.propTypes = {
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
   onChangeUsername: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
@@ -107,6 +142,7 @@ LoginPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   username: makeSelectUsername(),
   password: makeSelectPassword(),
+  loading: makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

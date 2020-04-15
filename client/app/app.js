@@ -14,8 +14,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { HelmetProvider } from 'react-helmet-async';
-import history from 'utils/history';
+import '@elastic/eui/dist/eui_theme_dark.css';
 import 'sanitize.css/sanitize.css';
+
+import history from 'utils/history';
 
 // Import root app
 import App from 'containers/App';
