@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectRegisterPageState = (state) => state.registerPage || initialState;
+export const selectRegisterPageState = (state) =>
+  state.registerPage || initialState;
 
 export const makeSelectRegisterPage = () =>
   createSelector(selectRegisterPageState, (substate) => substate);

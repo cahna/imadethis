@@ -26,7 +26,7 @@ const options = {
 describe('loginPageSaga', () => {
   const mainSaga = loginPageSaga();
 
-  it('should start task to watch for LOAD_REPOS action', () => {
+  it('should start task to watch for REQUEST_LOGIN action', () => {
     const takeLatestDescriptor = mainSaga.next().value;
 
     expect(takeLatestDescriptor).toEqual(

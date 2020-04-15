@@ -4,6 +4,8 @@ import {
   USERNAME_CHANGED,
   REQUEST_REGISTER,
   RESET_REGISTER_PAGE,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
 } from '../constants';
 import {
   changeUsername,
@@ -11,6 +13,8 @@ import {
   changeConfirmPassword,
   submitRegister,
   resetRegisterPage,
+  registerSuccess,
+  registerFailure,
 } from '../actions';
 
 describe('RegisterPage actions', () => {
@@ -59,6 +63,33 @@ describe('RegisterPage actions', () => {
         type: RESET_REGISTER_PAGE,
       };
       expect(resetRegisterPage()).toEqual(expected);
+    });
+  });
+
+  describe('registerSuccess Action', () => {
+    it('has a type of REGISTER_SUCCESS', () => {
+      const expected = {
+        type: REGISTER_SUCCESS,
+      };
+      expect(registerSuccess()).toEqual(expected);
+    });
+  });
+
+  describe('registerFailure Action', () => {
+    it('sets default payload with no args', () => {
+      const expected = {
+        type: REGISTER_FAILURE,
+        payload: { error: '' },
+      };
+      expect(registerFailure()).toEqual(expected);
+    });
+
+    it('sets error payload with arg', () => {
+      const expected = {
+        type: REGISTER_FAILURE,
+        payload: { error: 'TEST' },
+      };
+      expect(registerFailure('TEST')).toEqual(expected);
     });
   });
 });
