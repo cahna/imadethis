@@ -71,7 +71,7 @@ export function LoginPage({
         <title>Login</title>
         <meta name="description" content="Login" />
       </Helmet>
-      <EuiPageBody component="div">
+      <EuiPageBody>
         <EuiPageContent verticalPosition="center" horizontalPosition="center">
           <EuiPageContentHeader>
             <EuiPageContentHeaderSection>

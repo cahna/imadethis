@@ -14,8 +14,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { HelmetProvider } from 'react-helmet-async';
+import { ThemeProvider } from 'styled-components';
 import '@elastic/eui/dist/eui_theme_dark.css';
 import 'sanitize.css/sanitize.css';
+import * as euiVars from '@elastic/eui/dist/eui_theme_dark.json';
 
 import history from 'utils/history';
 
@@ -44,13 +46,15 @@ const MOUNT_NODE = document.getElementById('app');
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </ConnectedRouter>
-      </LanguageProvider>
+      <ThemeProvider theme={euiVars}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
+          </ConnectedRouter>
+        </LanguageProvider>
+      </ThemeProvider>
     </Provider>,
     MOUNT_NODE,
   );

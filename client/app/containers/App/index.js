@@ -13,8 +13,6 @@ import { Switch, Route } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-// import ProtectedRoute from 'containers/ProtectedRoute';
-// import PublicOnlyRoute from 'containers/ProtectedRoute';
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import RegisterPage from 'containers/RegisterPage/Loadable';
@@ -38,7 +36,7 @@ export default function App() {
   useInjectSaga({ key, saga });
 
   return (
-    <div>
+    <>
       <Switch>
         <Route exact path="/" component={ManagedHomePage} />
         <Route exact path="/login" component={ManagedLoginPage} />
@@ -46,6 +44,6 @@ export default function App() {
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
-    </div>
+    </>
   );
 }
