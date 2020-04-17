@@ -4,7 +4,7 @@ import {
   REQUEST_LOGIN,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  RESET_LOGIN_PAGE,
+  LOGIN_FORM_LOADING,
 } from '../constants';
 import {
   changeUsername,
@@ -12,7 +12,7 @@ import {
   submitLogin,
   loginSuccess,
   loginFailure,
-  resetLoginPage,
+  loginFormLoading,
 } from '../actions';
 
 describe('LoginPage actions', () => {
@@ -38,10 +38,17 @@ describe('LoginPage actions', () => {
 
   describe('submitLogin Action', () => {
     it('has a type of REQUEST_LOGIN', () => {
+      const payload = {
+        username: 'testuser',
+        password: 'hunter12',
+        onStart: jest.fn(),
+        onFailure: jest.fn(),
+      };
       const expected = {
         type: REQUEST_LOGIN,
+        payload,
       };
-      expect(submitLogin()).toEqual(expected);
+      expect(submitLogin(payload)).toEqual(expected);
     });
   });
 
@@ -59,17 +66,35 @@ describe('LoginPage actions', () => {
     it('has a type of LOGIN_FAILURE', () => {
       const expected = {
         type: LOGIN_FAILURE,
+        payload: { error: undefined },
       };
       expect(loginFailure()).toEqual(expected);
     });
+
+    it('accepts an optional payload', () => {
+      const expected = {
+        type: LOGIN_FAILURE,
+        payload: { error: 'TEST' },
+      };
+      expect(loginFailure('TEST')).toEqual(expected);
+    });
   });
 
-  describe('resetLoginPage Action', () => {
-    it('has a type of RESET_LOGIN_PAGE', () => {
+  describe('loginFormLoading Action', () => {
+    it('has a type of LOGIN_FORM_LOADING', () => {
       const expected = {
-        type: RESET_LOGIN_PAGE,
+        type: LOGIN_FORM_LOADING,
+        payload: { loading: true },
       };
-      expect(resetLoginPage()).toEqual(expected);
+      expect(loginFormLoading()).toEqual(expected);
+    });
+
+    it('accepts an optional argument', () => {
+      const expected = {
+        type: LOGIN_FORM_LOADING,
+        payload: { loading: false },
+      };
+      expect(loginFormLoading(false)).toEqual(expected);
     });
   });
 });

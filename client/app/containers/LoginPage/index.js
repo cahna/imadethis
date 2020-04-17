@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { push } from 'connected-react-router';
 import {
@@ -26,50 +25,57 @@ import {
 } from '@elastic/eui';
 
 import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import {
-  makeSelectUsername,
-  makeSelectPassword,
-  makeSelectLoading,
-} from './selectors';
-import reducer from './reducer';
+import { ROUTE_REGISTER } from 'containers/App/constants';
+
+import reducer, { initialState } from './reducer';
 import saga from './saga';
 import messages from './messages';
 import {
   submitLogin,
   changeUsername,
   changePassword,
-  resetLoginPage,
+  loginFormLoading,
+  loginFailure,
 } from './actions';
 
 const key = 'loginPage';
 
-export function LoginPage({
-  username,
-  password,
-  loading,
-  onChangeUsername,
-  onChangePassword,
-  onSubmitForm,
-  goToRegisterPage,
-  clearForm,
-}) {
-  useInjectReducer({ key, reducer });
+export function LoginPage({ makeOnSubmitForm, navigateTo }) {
   useInjectSaga({ key, saga });
-  useEffect(
-    () => () => {
-      clearForm();
-    },
-    [],
-  );
 
   const { formatMessage } = useIntl();
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { username, password, loading } = state;
+
+  const goToRegisterPage = useCallback(() => navigateTo(ROUTE_REGISTER), [
+    navigateTo,
+  ]);
+  const onChangeUsername = useCallback(
+    (evt) => dispatch(changeUsername(evt.target.value)),
+    [],
+  );
+  const onChangePassword = useCallback(
+    (evt) => dispatch(changePassword(evt.target.value)),
+    [],
+  );
+  const onSubmitForm = useCallback(
+    makeOnSubmitForm({
+      username,
+      password,
+      onStart: () => dispatch(loginFormLoading()),
+      onFailure: (error) => dispatch(loginFailure(error)),
+    }),
+    [username, password, makeOnSubmitForm],
+  );
 
   return (
     <EuiPage>
       <Helmet>
-        <title>Login</title>
-        <meta name="description" content="Login" />
+        <title>{formatMessage(messages.loginPageTitle)}</title>
+        <meta
+          name="description"
+          content={formatMessage(messages.loginPageDescription)}
+        />
       </Helmet>
       <EuiPageBody>
         <EuiPageContent verticalPosition="center" horizontalPosition="center">
@@ -89,6 +95,7 @@ export function LoginPage({
                   placeholder=""
                   value={username}
                   onChange={onChangeUsername}
+                  disabled={loading}
                 />
               </EuiFormRow>
               <EuiFormRow label={formatMessage(messages.passwordLabel)}>
@@ -96,6 +103,7 @@ export function LoginPage({
                   placeholder=""
                   value={password}
                   onChange={onChangePassword}
+                  disabled={loading}
                 />
               </EuiFormRow>
               <EuiFormRow>
@@ -129,35 +137,20 @@ export function LoginPage({
 }
 
 LoginPage.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
-  onChangeUsername: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  onSubmitForm: PropTypes.func.isRequired,
-  goToRegisterPage: PropTypes.func.isRequired,
-  clearForm: PropTypes.func.isRequired,
+  makeOnSubmitForm: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = createStructuredSelector({
-  username: makeSelectUsername(),
-  password: makeSelectPassword(),
-  loading: makeSelectLoading(),
-});
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onChangePassword: (evt) => dispatch(changePassword(evt.target.value)),
-    onSubmitForm: (evt) => {
+    navigateTo: (route) => dispatch(push(route)),
+    makeOnSubmitForm: (payload) => (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(submitLogin());
+      dispatch(submitLogin(payload));
     },
-    clearForm: () => dispatch(resetLoginPage()),
-    goToRegisterPage: () => dispatch(push('/register')),
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(null, mapDispatchToProps);
 
 export default compose(withConnect)(LoginPage);

@@ -1,20 +1,24 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
 import request from 'utils/request';
-import { API_LOGIN, LOCAL_TOKEN_NAME } from 'containers/App/constants';
+import {
+  API_LOGIN,
+  LOCAL_TOKEN_NAME,
+  ROUTE_HOME,
+} from 'containers/App/constants';
 import { userLoggedIn } from 'containers/App/actions';
 
 import { REQUEST_LOGIN } from './constants';
-import { makeSelectUsername, makeSelectPassword } from './selectors';
-import { loginFailure } from './actions';
 
 /**
  * Send authentication request
  */
-export function* submitLogin() {
-  const username = yield select(makeSelectUsername());
-  const password = yield select(makeSelectPassword());
+export function* submitLogin({
+  payload: { username, password, onStart, onFailure },
+}) {
+  yield onStart();
+
   const options = {
     body: JSON.stringify({ username, password }),
     method: 'POST',
@@ -29,9 +33,9 @@ export function* submitLogin() {
 
     localStorage.setItem(LOCAL_TOKEN_NAME, response.accessToken);
     yield put(userLoggedIn(response.accessToken));
-    yield put(push('/'));
+    yield put(push(ROUTE_HOME));
   } catch (error) {
-    yield put(loginFailure());
+    yield put(onFailure(error));
     localStorage.removeItem(LOCAL_TOKEN_NAME);
   }
 }

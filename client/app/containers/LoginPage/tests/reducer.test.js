@@ -3,10 +3,9 @@ import loginPageReducer from '../reducer';
 import {
   changeUsername,
   changePassword,
-  submitLogin,
   loginSuccess,
   loginFailure,
-  resetLoginPage,
+  loginFormLoading,
 } from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
@@ -102,23 +101,14 @@ describe('loginPageReducer', () => {
     );
   });
 
-  it('should handle submitLogin correctly', () => {
-    expect(loginPageReducer(state, submitLogin())).toEqual(
+  it('should handle loginFormLoading correctly', () => {
+    expect(loginPageReducer(state, loginFormLoading())).toEqual(
       produce(state, (draft) => {
-        draft.loginError = false;
         draft.loading = true;
       }),
     );
-  });
-
-  it('should handle resetLoginPage correctly', () => {
-    expect(loginPageReducer(state, resetLoginPage())).toEqual(
+    expect(loginPageReducer(state, loginFormLoading(false))).toEqual(
       produce(state, (draft) => {
-        draft.username = '';
-        draft.password = '';
-        draft.usernameError = false;
-        draft.passwordError = false;
-        draft.loginError = false;
         draft.loading = false;
       }),
     );

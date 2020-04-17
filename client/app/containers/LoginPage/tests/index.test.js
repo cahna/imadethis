@@ -20,43 +20,32 @@ describe('<LoginPage />', () => {
 
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    const onChangeUsername = jest.fn();
-    const onChangePassword = jest.fn();
+    const navigateTo = jest.fn();
     const onSubmitForm = jest.fn();
-    const clearForm = jest.fn();
-    const goToRegisterPage = jest.fn();
+    const makeOnSubmitForm = () => onSubmitForm;
 
     render(
       <Provider store={store}>
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
             <LoginPage
-              username=""
-              password=""
-              loading={false}
-              onChangeUsername={onChangeUsername}
-              onChangePassword={onChangePassword}
-              onSubmitForm={onSubmitForm}
-              clearForm={clearForm}
-              goToRegisterPage={goToRegisterPage}
+              navigateTo={navigateTo}
+              makeOnSubmitForm={makeOnSubmitForm}
             />
           </HelmetProvider>
         </IntlProvider>
       </Provider>,
     );
     expect(spy).not.toHaveBeenCalled();
-    expect(onChangeUsername).not.toHaveBeenCalled();
-    expect(onChangePassword).not.toHaveBeenCalled();
+    expect(navigateTo).not.toHaveBeenCalled();
     expect(onSubmitForm).not.toHaveBeenCalled();
   });
 
   it.skip('Should render and match the snapshot', () => {
     // SKIPPED: Snapshot fails for stupid reasons
-    const onChangeUsername = jest.fn();
-    const onChangePassword = jest.fn();
+    const navigateTo = jest.fn();
     const onSubmitForm = jest.fn();
-    const clearForm = jest.fn();
-    const goToRegisterPage = jest.fn();
+    const makeOnSubmitForm = () => onSubmitForm;
 
     const {
       container: { firstChild },
@@ -65,14 +54,8 @@ describe('<LoginPage />', () => {
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
             <LoginPage
-              username="TestUser"
-              password="TestPassword"
-              loading={false}
-              onChangeUsername={onChangeUsername}
-              onChangePassword={onChangePassword}
-              onSubmitForm={onSubmitForm}
-              clearForm={clearForm}
-              goToRegisterPage={goToRegisterPage}
+              navigateTo={navigateTo}
+              makeOnSubmitForm={makeOnSubmitForm}
             />
           </HelmetProvider>
         </IntlProvider>

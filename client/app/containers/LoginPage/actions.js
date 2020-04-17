@@ -4,8 +4,13 @@ import {
   REQUEST_LOGIN,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  RESET_LOGIN_PAGE,
+  LOGIN_FORM_LOADING,
 } from './constants';
+
+export const loginFormLoading = (loading = true) => ({
+  type: LOGIN_FORM_LOADING,
+  payload: { loading },
+});
 
 export const changeUsername = (username) => ({
   type: USERNAME_CHANGED,
@@ -17,13 +22,17 @@ export const changePassword = (password) => ({
   payload: { password },
 });
 
-export const submitLogin = () => ({ type: REQUEST_LOGIN });
+export const submitLogin = ({ username, password, onStart, onFailure }) => ({
+  type: REQUEST_LOGIN,
+  payload: { username, password, onStart, onFailure },
+});
 
 export const loginSuccess = (accessToken) => ({
   type: LOGIN_SUCCESS,
   payload: { accessToken },
 });
 
-export const loginFailure = () => ({ type: LOGIN_FAILURE });
-
-export const resetLoginPage = () => ({ type: RESET_LOGIN_PAGE });
+export const loginFailure = (error) => ({
+  type: LOGIN_FAILURE,
+  payload: { error },
+});

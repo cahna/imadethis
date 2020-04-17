@@ -39,9 +39,9 @@ const key = 'registerPage';
 
 export function RegisterPage({ makeOnSubmitForm }) {
   useInjectSaga({ key, saga });
+
   const { formatMessage } = useIntl();
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const {
     loading,
     username,
@@ -71,7 +71,7 @@ export function RegisterPage({ makeOnSubmitForm }) {
       onStart: () => dispatch(registerFormLoading()),
       onFailure: (error) => dispatch(registerFailure(error)),
     }),
-    [username, password],
+    [username, password, makeOnSubmitForm],
   );
 
   const formEmpty = !(username && password && confirmPassword);

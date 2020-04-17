@@ -3,11 +3,11 @@ import { testSaga } from 'redux-saga-test-plan';
 import { push } from 'connected-react-router';
 
 import request from 'utils/request';
-import { API_LOGIN } from 'containers/App/constants';
+import { API_LOGIN, ROUTE_HOME } from 'containers/App/constants';
 import { userLoggedIn } from 'containers/App/actions';
 
 import { REQUEST_LOGIN } from '../constants';
-import { loginFailure } from '../actions';
+import { loginFailure, loginFormLoading } from '../actions';
 import loginPageSaga, { submitLogin } from '../saga';
 
 const username = 'TestUser';
@@ -36,28 +36,47 @@ describe('loginPageSaga', () => {
 });
 
 describe('submitLogin saga generator', () => {
+  const onStart = loginFormLoading;
+  const onFailure = loginFailure;
+
   it('handles successful login', () => {
-    testSaga(submitLogin)
+    testSaga(() =>
+      submitLogin({
+        payload: {
+          username,
+          password,
+          onStart,
+          onFailure,
+        },
+      }),
+    )
       .next()
-      .next(username)
-      .next(password)
+      .next()
       .call(request, API_LOGIN, options)
       .next({ accessToken })
       .put(userLoggedIn(accessToken))
       .next()
-      .put(push('/'))
+      .put(push(ROUTE_HOME))
       .next()
       .isDone();
   });
 
   it('handles failed login', () => {
-    testSaga(submitLogin)
+    testSaga(() =>
+      submitLogin({
+        payload: {
+          username,
+          password,
+          onStart,
+          onFailure,
+        },
+      }),
+    )
       .next()
-      .next(username)
-      .next(password)
+      .next()
       .call(request, API_LOGIN, options)
       .throw('dummy')
-      .put(loginFailure())
+      .put(loginFailure('dummy'))
       .next()
       .isDone();
   });
