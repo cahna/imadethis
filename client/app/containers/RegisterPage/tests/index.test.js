@@ -18,63 +18,32 @@ describe('<RegisterPage />', () => {
 
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    const onChangeUsername = jest.fn();
-    const onChangePassword = jest.fn();
-    const onChangeConfirmPassword = jest.fn();
     const onSubmitForm = jest.fn();
-    const clearForm = jest.fn();
+    const makeOnSubmitForm = () => onSubmitForm;
     render(
       <Provider store={store}>
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
-            <RegisterPage
-              loading={false}
-              username=""
-              password=""
-              confirmPassword=""
-              usernameError={false}
-              passwordError={false}
-              confirmPasswordError={false}
-              onChangeUsername={onChangeUsername}
-              onChangePassword={onChangePassword}
-              onChangeConfirmPassword={onChangeConfirmPassword}
-              onSubmitForm={onSubmitForm}
-              clearForm={clearForm}
-            />
+            <RegisterPage makeOnSubmitForm={makeOnSubmitForm} />
           </HelmetProvider>
         </IntlProvider>
       </Provider>,
     );
     expect(spy).not.toHaveBeenCalled();
+    expect(onSubmitForm).not.toHaveBeenCalled();
   });
 
   it.skip('Should render and match the snapshot', () => {
     // SKIPPED: stupid snapshots...
-    const onChangeUsername = jest.fn();
-    const onChangePassword = jest.fn();
-    const onChangeConfirmPassword = jest.fn();
     const onSubmitForm = jest.fn();
-    const clearForm = jest.fn();
+    const makeOnSubmitForm = () => onSubmitForm;
     const {
       container: { firstChild },
     } = render(
       <Provider store={store}>
         <IntlProvider locale={DEFAULT_LOCALE}>
           <HelmetProvider>
-            <RegisterPage
-              loading={false}
-              username=""
-              password=""
-              confirmPassword=""
-              usernameError={false}
-              passwordError={false}
-              confirmPasswordError={false}
-              onChangeUsername={onChangeUsername}
-              onChangePassword={onChangePassword}
-              onChangeConfirmPassword={onChangeConfirmPassword}
-              onSubmitForm={onSubmitForm}
-              clearForm={clearForm}
-            />
+            <RegisterPage makeOnSubmitForm={makeOnSubmitForm} />
           </HelmetProvider>
         </IntlProvider>
       </Provider>,

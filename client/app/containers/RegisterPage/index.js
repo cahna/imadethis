@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
   EuiPage,
@@ -23,53 +22,57 @@ import {
 } from '@elastic/eui';
 
 import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
 
-import {
-  makeSelectUsername,
-  makeSelectPassword,
-  makeSelectConfirmPassword,
-  makeSelectUsernameError,
-  makeSelectPasswordError,
-  makeSelectConfirmPasswordError,
-  makeSelectLoading,
-} from './selectors';
 import {
   submitRegister,
   changeUsername,
   changePassword,
   changeConfirmPassword,
-  resetRegisterPage,
+  registerFailure,
+  registerFormLoading,
 } from './actions';
-import reducer from './reducer';
+import reducer, { initialState } from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 const key = 'registerPage';
 
-export function RegisterPage({
-  loading,
-  username,
-  password,
-  confirmPassword,
-  usernameError,
-  passwordError,
-  confirmPasswordError,
-  onChangeUsername,
-  onChangePassword,
-  onChangeConfirmPassword,
-  onSubmitForm,
-  clearForm,
-}) {
-  useInjectReducer({ key, reducer });
+export function RegisterPage({ makeOnSubmitForm }) {
   useInjectSaga({ key, saga });
-  useEffect(
-    () => () => {
-      clearForm();
-    },
+  const { formatMessage } = useIntl();
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const {
+    loading,
+    username,
+    password,
+    confirmPassword,
+    usernameError,
+    passwordError,
+    confirmPasswordError,
+  } = state;
+
+  const onChangeUsername = useCallback(
+    (evt) => dispatch(changeUsername(evt.target.value)),
     [],
   );
-  const { formatMessage } = useIntl();
+  const onChangePassword = useCallback(
+    (evt) => dispatch(changePassword(evt.target.value)),
+    [],
+  );
+  const onChangeConfirmPassword = useCallback(
+    (evt) => dispatch(changeConfirmPassword(evt.target.value)),
+    [],
+  );
+  const onSubmitForm = useCallback(
+    makeOnSubmitForm({
+      username,
+      password,
+      onStart: () => dispatch(registerFormLoading()),
+      onFailure: (error) => dispatch(registerFailure(error)),
+    }),
+    [username, password],
+  );
 
   const formEmpty = !(username && password && confirmPassword);
   const formErrors = usernameError || passwordError || confirmPasswordError;
@@ -138,44 +141,16 @@ export function RegisterPage({
 }
 
 RegisterPage.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  confirmPassword: PropTypes.string.isRequired,
-  usernameError: PropTypes.bool.isRequired,
-  passwordError: PropTypes.bool.isRequired,
-  confirmPasswordError: PropTypes.bool.isRequired,
-  onChangeUsername: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  onChangeConfirmPassword: PropTypes.func.isRequired,
-  onSubmitForm: PropTypes.func.isRequired,
-  clearForm: PropTypes.func.isRequired,
+  makeOnSubmitForm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
-  username: makeSelectUsername(),
-  password: makeSelectPassword(),
-  confirmPassword: makeSelectConfirmPassword(),
-  usernameError: makeSelectUsernameError(),
-  passwordError: makeSelectPasswordError(),
-  confirmPasswordError: makeSelectConfirmPasswordError(),
+const mapDispatchToProps = (dispatch) => ({
+  makeOnSubmitForm: (payload) => (evt) => {
+    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+    dispatch(submitRegister(payload));
+  },
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onChangePassword: (evt) => dispatch(changePassword(evt.target.value)),
-    onChangeConfirmPassword: (evt) =>
-      dispatch(changeConfirmPassword(evt.target.value)),
-    onSubmitForm: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(submitRegister());
-    },
-    clearForm: () => dispatch(resetRegisterPage()),
-  };
-}
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(null, mapDispatchToProps);
 
 export default compose(withConnect)(RegisterPage);

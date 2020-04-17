@@ -5,7 +5,7 @@ import {
   REQUEST_REGISTER,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
-  RESET_REGISTER_PAGE,
+  REGISTER_FORM_LOADING,
 } from './constants';
 
 export const changeUsername = (username) => ({
@@ -23,7 +23,15 @@ export const changeConfirmPassword = (confirmPassword) => ({
   payload: { confirmPassword },
 });
 
-export const submitRegister = () => ({ type: REQUEST_REGISTER });
+export const submitRegister = ({ username, password, onStart, onFailure }) => ({
+  type: REQUEST_REGISTER,
+  payload: { username, password, onStart, onFailure },
+});
+
+export const registerFormLoading = (loading = true) => ({
+  type: REGISTER_FORM_LOADING,
+  payload: { loading },
+});
 
 export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
 
@@ -31,5 +39,3 @@ export const registerFailure = (error = '') => ({
   type: REGISTER_FAILURE,
   payload: { error },
 });
-
-export const resetRegisterPage = () => ({ type: RESET_REGISTER_PAGE });

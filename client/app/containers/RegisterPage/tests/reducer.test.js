@@ -4,9 +4,8 @@ import {
   changeUsername,
   changePassword,
   changeConfirmPassword,
-  submitRegister,
+  registerFormLoading,
   registerFailure,
-  resetRegisterPage,
 } from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
@@ -68,24 +67,14 @@ describe('registerPageReducer', () => {
     );
   });
 
-  it('should handle submitRegister correctly', () => {
-    expect(registerPageReducer(state, submitRegister())).toEqual(
+  it('should handle registerFormLoading correctly', () => {
+    expect(registerPageReducer(state, registerFormLoading())).toEqual(
       produce(state, (draft) => {
-        draft.registerError = false;
         draft.loading = true;
       }),
     );
-  });
-
-  it('should handle resetRegisterPage correctly', () => {
-    expect(registerPageReducer(state, resetRegisterPage())).toEqual(
+    expect(registerPageReducer(state, registerFormLoading(false))).toEqual(
       produce(state, (draft) => {
-        draft.username = '';
-        draft.password = '';
-        draft.confirmPassword = '';
-        draft.usernameError = false;
-        draft.passwordError = false;
-        draft.registerError = false;
         draft.loading = false;
       }),
     );

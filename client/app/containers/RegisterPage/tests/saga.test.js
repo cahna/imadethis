@@ -6,7 +6,11 @@ import request from 'utils/request';
 import { API_REGISTER, ROUTE_LOGIN } from 'containers/App/constants';
 
 import { REQUEST_REGISTER } from '../constants';
-import { registerFailure, registerSuccess } from '../actions';
+import {
+  registerFailure,
+  registerSuccess,
+  registerFormLoading,
+} from '../actions';
 import registerPageSaga, { submitRegistration } from '../saga';
 
 const username = 'TestUser';
@@ -35,10 +39,21 @@ describe('registerPageSaga', () => {
 
 describe('submitRegistration saga generator', () => {
   it('handles successful register', () => {
-    testSaga(submitRegistration)
+    const onStart = registerFormLoading;
+    const onFailure = registerFailure;
+
+    testSaga(() =>
+      submitRegistration({
+        payload: {
+          username,
+          password,
+          onStart,
+          onFailure,
+        },
+      }),
+    )
       .next()
-      .next(username)
-      .next(password)
+      .next()
       .call(request, API_REGISTER, options)
       .next({ success: true })
       .put(registerSuccess())
@@ -49,13 +64,24 @@ describe('submitRegistration saga generator', () => {
   });
 
   it('handles failed register', () => {
-    testSaga(submitRegistration)
+    const onStart = registerFormLoading;
+    const onFailure = registerFailure;
+
+    testSaga(() =>
+      submitRegistration({
+        payload: {
+          username,
+          password,
+          onStart,
+          onFailure,
+        },
+      }),
+    )
       .next()
-      .next(username)
-      .next(password)
+      .next()
       .call(request, API_REGISTER, options)
       .throw('dummy')
-      .put(registerFailure())
+      .put(registerFailure('dummy'))
       .next()
       .isDone();
   });

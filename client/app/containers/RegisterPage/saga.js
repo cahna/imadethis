@@ -1,19 +1,20 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
 import request from 'utils/request';
 import { API_REGISTER, ROUTE_LOGIN } from 'containers/App/constants';
 
 import { REQUEST_REGISTER } from './constants';
-import { makeSelectUsername, makeSelectPassword } from './selectors';
-import { registerFailure, registerSuccess } from './actions';
+import { registerSuccess } from './actions';
 
 /**
  * Send registration request
  */
-export function* submitRegistration() {
-  const username = yield select(makeSelectUsername());
-  const password = yield select(makeSelectPassword());
+export function* submitRegistration({
+  payload: { username, password, onStart, onFailure },
+}) {
+  yield onStart();
+
   const options = {
     body: JSON.stringify({ username, password }),
     method: 'POST',
@@ -30,10 +31,10 @@ export function* submitRegistration() {
       yield put(registerSuccess());
       yield put(push(ROUTE_LOGIN));
     } else {
-      yield put(registerFailure((response || {}).error));
+      yield put(onFailure((response || {}).error));
     }
   } catch (error) {
-    yield put(registerFailure());
+    yield put(onFailure(error));
   }
 }
 

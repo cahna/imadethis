@@ -9,4 +9,5 @@ export const USERNAME_CHANGED = 'imadethis/RegisterPage/USERNAME_CHANGED';
 export const PASSWORD_CHANGED = 'imadethis/RegisterPage/PASSWORD_CHANGED';
 export const CONFIRM_PASSWORD_CHANGED =
   'imadethis/RegisterPage/CONFIRM_PASSWORD_CHANGED';
-export const RESET_REGISTER_PAGE = 'imadethis/RegisterPage/RESET_REGISTER_PAGE';
+export const REGISTER_FORM_LOADING =
+  'imadethis/RegisterPage/REGISTER_FORM_LOADING';

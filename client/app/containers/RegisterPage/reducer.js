@@ -3,9 +3,8 @@ import {
   PASSWORD_CHANGED,
   CONFIRM_PASSWORD_CHANGED,
   USERNAME_CHANGED,
-  REQUEST_REGISTER,
   REGISTER_FAILURE,
-  RESET_REGISTER_PAGE,
+  REGISTER_FORM_LOADING,
 } from './constants';
 
 export const initialState = {
@@ -48,23 +47,12 @@ const registerPageReducer = (state = initialState, { type, payload }) =>
           draft.passwordError = false;
         }
         break;
-      case REQUEST_REGISTER:
-        draft.registerError = false;
-        draft.loading = true;
+      case REGISTER_FORM_LOADING:
+        draft.loading = payload.loading;
         break;
       case REGISTER_FAILURE:
         draft.registerError = true;
         draft.loading = false;
-        break;
-      case RESET_REGISTER_PAGE:
-        draft.username = initialState.username;
-        draft.password = initialState.password;
-        draft.confirmPassword = initialState.confirmPassword;
-        draft.usernameError = initialState.usernameError;
-        draft.passwordError = initialState.passwordError;
-        draft.confirmPasswordError = initialState.confirmPasswordError;
-        draft.loading = initialState.loading;
-        draft.registerError = initialState.registerError;
         break;
     }
   });
