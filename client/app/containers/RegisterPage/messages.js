@@ -9,9 +9,17 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.containers.RegisterPage';
 
 export default defineMessages({
+  registerPageTitle: {
+    id: `${scope}.registerPageTitle`,
+    defaultMessage: 'Register',
+  },
+  registerPageDescription: {
+    id: `${scope}.registerPageDescription`,
+    defaultMessage: 'Register a new user account.',
+  },
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Register a new account:',
+    defaultMessage: 'Register',
   },
   registerButtonLabel: {
     id: `${scope}.registerButtonLabel`,

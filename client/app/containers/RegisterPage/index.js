@@ -80,8 +80,11 @@ export function RegisterPage({ makeOnSubmitForm }) {
   return (
     <EuiPage>
       <Helmet>
-        <title>Register</title>
-        <meta name="description" content="Register a new account" />
+        <title>{formatMessage(messages.registerPageTitle)}</title>
+        <meta
+          name="description"
+          content={formatMessage(messages.registerPageDescription)}
+        />
       </Helmet>
       <EuiPageBody>
         <EuiPageContent verticalPosition="center" horizontalPosition="center">
@@ -101,6 +104,7 @@ export function RegisterPage({ makeOnSubmitForm }) {
                   placeholder=""
                   value={username}
                   onChange={onChangeUsername}
+                  disabled={loading}
                 />
               </EuiFormRow>
               <EuiFormRow label={formatMessage(messages.passwordLabel)}>
@@ -108,6 +112,7 @@ export function RegisterPage({ makeOnSubmitForm }) {
                   placeholder=""
                   value={password}
                   onChange={onChangePassword}
+                  disabled={loading}
                 />
               </EuiFormRow>
               <EuiFormRow label={formatMessage(messages.confirmPasswordLabel)}>
@@ -115,6 +120,7 @@ export function RegisterPage({ makeOnSubmitForm }) {
                   placeholder=""
                   value={confirmPassword}
                   onChange={onChangeConfirmPassword}
+                  disabled={loading}
                 />
               </EuiFormRow>
               <EuiFormRow>
