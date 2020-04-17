@@ -103,6 +103,11 @@ module.exports = (options) => ({
           },
         },
       },
+      {
+        // Remove ElasticUI dependencies not being used
+        test: /(highlight\.js|moment)/,
+        use: 'null-loader',
+      },
     ],
   },
   plugins: options.plugins.concat([

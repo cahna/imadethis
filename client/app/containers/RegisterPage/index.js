@@ -80,7 +80,7 @@ export function RegisterPage({
         <title>Register</title>
         <meta name="description" content="Register a new account" />
       </Helmet>
-      <EuiPageBody component="div">
+      <EuiPageBody>
         <EuiPageContent verticalPosition="center" horizontalPosition="center">
           <EuiPageContentHeader>
             <EuiPageContentHeaderSection>

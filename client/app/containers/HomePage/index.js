@@ -83,7 +83,7 @@ export function HomePage({ currentUser, doLogoutUser }) {
           },
         ]}
       />
-      <EuiPageBody component="div">
+      <EuiPageBody>
         <EuiPageHeader>
           <EuiPageHeaderSection>
             <EuiTitle size="l">
