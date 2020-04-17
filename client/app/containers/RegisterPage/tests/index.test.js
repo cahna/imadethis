@@ -33,8 +33,7 @@ describe('<RegisterPage />', () => {
     expect(onSubmitForm).not.toHaveBeenCalled();
   });
 
-  it.skip('Should render and match the snapshot', () => {
-    // SKIPPED: stupid snapshots...
+  it('Should render and match the snapshot', () => {
     const onSubmitForm = jest.fn();
     const makeOnSubmitForm = () => onSubmitForm;
     const {
