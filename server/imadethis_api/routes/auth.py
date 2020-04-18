@@ -3,7 +3,9 @@ from flask_jwt_extended import (
     create_access_token,
     jwt_required,
     get_raw_jwt,
-    get_jwt_identity
+    get_jwt_identity,
+    create_refresh_token,
+    jwt_refresh_token_required
 )
 from imadethis_api.services import auth
 from imadethis_api.services.users import get_user_by_id
@@ -26,8 +28,12 @@ def login() -> Response:
     username, password = validate_auth_user(request.get_json())
     user = auth.login_user(username, password)
     token = create_access_token(identity=user.jwt_identity())
+    refresh_token = create_refresh_token(identity=user.jwt_identity())
 
-    return jsonify({'accessToken': token})
+    return jsonify({
+        'accessToken': token,
+        'refreshToken': refresh_token,
+    })
 
 
 @bp.route('/active_user', methods=['GET'])
@@ -37,6 +43,15 @@ def get_active_user() -> Response:
     user = get_user_by_id(identity['unique_id'])
 
     return jsonify(user.dto())
+
+
+@bp.route('/refresh', methods=['POST'])
+@jwt_refresh_token_required
+def refresh_jwt() -> Response:
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+
+    return jsonify({'accessToken': access_token})
 
 
 @bp.route('/logout', methods=['POST'])

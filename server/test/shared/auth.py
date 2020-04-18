@@ -1,6 +1,6 @@
 from typing import Mapping
 from flask.testing import FlaskClient
-from .constants import JWT_TOKEN_NAME
+from .constants import JWT_TOKEN_NAME, JWT_REFRESH_TOKEN_NAME
 from .request import auth_header
 from .response import (
     verify_api_response, verify_user_response
@@ -34,12 +34,33 @@ def verify_login_user(client: FlaskClient,
     assert isinstance(token, str) and len(token) > 1, \
         f'Invalid token in response: {token}'
 
+    assert JWT_REFRESH_TOKEN_NAME in data, 'Missing refresh token in response'
+    refresh_token = data.get(JWT_REFRESH_TOKEN_NAME)
+    assert isinstance(refresh_token, str) and len(refresh_token) > 1, \
+        f'Invalid refresh token in response: {refresh_token}'
+
+    assert token != refresh_token
+
+    return token, refresh_token
+
+
+def verify_refresh_token(client: FlaskClient, refresh_token: str) -> str:
+    response = client.post('/auth/refresh',
+                           headers=auth_header(refresh_token),
+                           follow_redirects=True)
+    data = verify_api_response(response)
+    assert JWT_TOKEN_NAME in data
+    token = data.get(JWT_TOKEN_NAME)
+    assert isinstance(token, str) and len(token) > 1, \
+        f'Invalid token in response: {token}'
+    assert token != refresh_token
+
     return token
 
 
 def verify_logout_user(client: FlaskClient,
                        access_token: str):
-    response = client.post(f'/auth/logout',
+    response = client.post('/auth/logout',
                            headers=auth_header(access_token),
                            follow_redirects=True)
     data = verify_api_response(response)
@@ -54,8 +75,8 @@ def verify_get_active_user(client: FlaskClient,
                            username: str = None) -> Mapping:
     assert access_token
 
-    response = client.get(f'/auth/active_user',
+    response = client.get('/auth/active_user',
                           headers=auth_header(access_token),
-                          follow_redirects=False)
+                          follow_redirects=True)
 
     return verify_user_response(response, username=username)
